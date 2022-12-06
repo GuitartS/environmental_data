@@ -1,0 +1,512 @@
+br_creeper_table = table(birdhab$s.edge, birdhab$BRCR > 0)[, 2:1]
+br_creeper_table
+}
+chi_BRCR <- chisq.test(br_creeper_table)
+chi_BRCR
+round(chi_BRCR$observed)
+View(chi_BRCR)
+chi_BRCR$observed
+chi_BRCR$expected
+chi_BRCR$residuals
+View(chi_BRCR)
+require(palmerpenguins)
+fit_fl_sp =
+lm(
+formula = flipper_length_mm ~ species,
+data = penguins)
+penguins = penguins
+View(penguins)
+?lm()
+{
+require(palmerpenguins)
+penguins = penguins
+fit_species = lm(formula = body_mass_g ~ species, data = penguins)
+}
+{
+require(palmerpenguins)
+penguins = penguins
+fit_species = lm(formula = body_mass_g ~ species, data = penguins)
+}
+class(fit_species)
+str(lm)
+str(fit_species)
+residuals(fit_species)
+fit_both = lm(formula = body_mass_g ~ species * sex, data = penguins)
+fit_sex = lm(formula = body_mass_g ~ sex, data = penguins)
+View(fit_sex)
+species_box = boxplot(body_mass_g ~ species, data = penguins)
+species_box
+species_box = boxplot(body_mass_g ~ species, data = penguins, ylab = "Body Mass (g)")
+species_box
+species_box = boxplot(body_mass_g ~ species, data = penguins,
+ylab = "Body Mass (g)", xlab = "Species")
+species_box
+species_box = boxplot(body_mass_g ~ species, data = penguins,
+ylab = "Body Mass (g)", xlab = "Species",
+main = "Penguin Body Mass by Species")
+species_box
+species_box = boxplot(body_mass_g ~ species, data = penguins,
+ylab = "Body Mass (g)", xlab = "Species",
+main = "Penguin Body Mass by Species")
+species_box
+fitsex_box = boxplot(body_mass_g ~ sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "Sex",
+main = "Penguin Body Mass by Sex")
+fitsex_box
+fitsex_box = boxplot(body_mass_g ~ sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "Sex",
+main = "Penguin Body Mass by Sex", names = c("Female", "Male"))
+fitsex_box
+fitboth_box = boxplot(body_mass_g ~ species * sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "",
+main = "Penguin Body Mass by Species and Sex",
+names = c("Female", "Male"))
+fitboth_box = boxplot(body_mass_g ~ species * sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "",
+main = "Penguin Body Mass by Species and Sex")
+fitboth_box
+fitboth_box = boxplot(body_mass_g ~ species * sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "",
+names = c("Adelie Female", "Adelie Male",
+"Gentoo Female", "Gentoo Male",
+"Chinstrap Female", "Chinstrap Male")
+main = "Penguin Body Mass by Species and Sex")
+fitboth_box = boxplot(body_mass_g ~ species * sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "",
+names = c("Adelie Female", "Adelie Male",
+"Gentoo Female", "Gentoo Male",
+"Chinstrap Female", "Chinstrap Male"),
+main = "Penguin Body Mass by Species and Sex")
+fitboth_box
+fitboth_box = boxplot(body_mass_g ~ species * sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "",
+names = c("Adelie \n Female", "Adelie Male",
+"Gentoo Female", "Gentoo Male",
+"Chinstrap Female", "Chinstrap Male"),
+main = "Penguin Body Mass by Species and Sex")
+fitboth_box
+?las()
+?boxplot()
+fitboth_box = boxplot(body_mass_g ~ species * sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "", las = 2,
+names = c("Adelie \n Female", "Adelie Male",
+"Gentoo Female", "Gentoo Male",
+"Chinstrap Female", "Chinstrap Male"),
+main = "Penguin Body Mass by Species and Sex")
+fitboth_box
+fitboth_box = boxplot(body_mass_g ~ species * sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "", las = 2,
+names = c("Adelie \n Female", "Adelie \n Male",
+"Gentoo \n Female", "Gentoo \n Male",
+"Chinstrap \n Female", "Chinstrap \n Male"),
+main = "Penguin Body Mass by Species and Sex")
+fitboth_box
+bartlett.test(body_mass_g ~ species, data = penguins)
+species_bart = round(bartlett.test(body_mass_g ~ species, data = penguins, digits =4)
+species_bart = round(bartlett.test(body_mass_g ~ species, data = penguins), digits =4)
+species_bart = round(bartlett.test(body_mass_g ~ species, data = penguins), digits =4)
+species_bart = round(bartlett.test(body_mass_g ~ species, data = penguins), digits = 4)
+species_bart = bartlett.test(body_mass_g ~ species, data = penguins)
+species_bart = bartlett.test(body_mass_g ~ species, data = penguins)
+species_bart
+?round()
+species_bart = bartlett.test(body_mass_g ~ species, data = penguins)
+View(species_bart)
+species_bart = bartlett.test(body_mass_g ~ species, data = penguins)
+species_bart$p.value
+sex_bart = bartlett.test(body_mass_g ~ sex, data = penguins)
+sex_bart$p.value
+both_bart = bartlett.test(body_mass_g ~ species * sex, data = penguins)
+dat_groups = aggregate(
+body_mass_g ~ island,
+data = penguins,
+FUN = c)
+?aggregate()
+dat_groups = aggregate(
+body_mass_g ~ island,
+data = penguins)
+dat_groups = aggregate(
+body_mass_g ~ island,
+data = penguins, FUN = c)
+dat_groups = aggregate(
+body_mass_g ~ island,
+data = penguins,
+FUN = c)
+require(palmerpenguins)
+dat_groups = aggregate(
+body_mass_g ~ island,
+data = penguins,
+FUN = c)
+str(dat_groups)
+dat_groups1 = aggregate(
+body_mass_g ~ sex,
+data = penguins,
+FUN = c)
+str(dat_groups1)
+dat_groups2 = aggregate(
+body_mass_g ~ species * sex,
+data = penguins,
+FUN = c)
+str(dat_groups2)
+bartlett.test(dat_groups2$body_mass_g)
+dat_groups2 = aggregate(
+body_mass_g ~ species * sex,
+data = penguins,
+FUN = c)
+str(dat_groups2)
+bartlett.test(dat_groups2$body_mass_g)
+{
+library(here)
+birds = read.csv(here("data", "bird.sta.csv"))
+hab = read.csv(here("data", "hab.sta.csv"))
+birdhab = merge(birds, hab, by=c("basin", "sub", "sta"))
+br_creeper_table = table(birdhab$s.edge, birdhab$BRCR > 0)[, 2:1]
+br_creeper_table
+}
+{
+chi_BRCR <- chisq.test(br_creeper_table)
+chi_BRCR$observed
+chi_BRCR$expected
+chi_BRCR$residuals
+}
+{
+require(palmerpenguins)
+penguins = penguins
+fit_species = lm(formula = body_mass_g ~ species, data = penguins)
+}
+fit_sex = lm(formula = body_mass_g ~ sex, data = penguins)
+fit_both = lm(formula = body_mass_g ~ species * sex, data = penguins)
+species_box = boxplot(body_mass_g ~ species, data = penguins,
+ylab = "Body Mass (g)", xlab = "Species",
+main = "Penguin Body Mass by Species")
+species_box
+fitsex_box = boxplot(body_mass_g ~ sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "Sex",
+main = "Penguin Body Mass by Sex", names = c("Female", "Male"))
+fitsex_box
+fitboth_box = boxplot(body_mass_g ~ species * sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "", las = 2,
+names = c("Adelie \n Female", "Adelie \n Male",
+"Gentoo \n Female", "Gentoo \n Male",
+"Chinstrap \n Female", "Chinstrap \n Male"),
+main = "Penguin Body Mass by Species and Sex")
+fitboth_box
+species_bart = bartlett.test(body_mass_g ~ species, data = penguins)
+sex_bart = bartlett.test(body_mass_g ~ sex, data = penguins)
+dat_groups2 = aggregate(
+body_mass_g ~ species * sex,
+data = penguins,
+FUN = c)
+str(dat_groups2)
+bartlett.test(dat_groups2$body_mass_g)
+{
+chi_BRCR <- chisq.test(br_creeper_table)
+chi_BRCR$observed
+chi_BRCR$expected
+chi_BRCR$residuals
+}
+{
+library(here)
+birds = read.csv(here("data", "bird.sta.csv"))
+hab = read.csv(here("data", "hab.sta.csv"))
+birdhab = merge(birds, hab, by=c("basin", "sub", "sta"))
+br_creeper_table = table(birdhab$s.edge, birdhab$BRCR > 0)[, 2:1]
+br_creeper_table
+}
+{
+chi_BRCR <- chisq.test(br_creeper_table)
+chi_BRCR$observed
+chi_BRCR$expected
+chi_BRCR$residuals
+}
+{
+require(palmerpenguins)
+penguins = penguins
+fit_species = lm(formula = body_mass_g ~ species, data = penguins)
+}
+fit_sex = lm(formula = body_mass_g ~ sex, data = penguins)
+fit_both = lm(formula = body_mass_g ~ species * sex, data = penguins)
+species_box = boxplot(body_mass_g ~ species, data = penguins,
+ylab = "Body Mass (g)", xlab = "Species",
+main = "Penguin Body Mass by Species")
+species_box
+fitsex_box = boxplot(body_mass_g ~ sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "Sex",
+main = "Penguin Body Mass by Sex", names = c("Female", "Male"))
+fitsex_box
+fitboth_box = boxplot(body_mass_g ~ species * sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "", las = 2,
+names = c("Adelie \n Female", "Adelie \n Male",
+"Gentoo \n Female", "Gentoo \n Male",
+"Chinstrap \n Female", "Chinstrap \n Male"),
+main = "Penguin Body Mass by Species and Sex")
+fitboth_box
+species_bart = bartlett.test(body_mass_g ~ species, data = penguins)
+sex_bart = bartlett.test(body_mass_g ~ sex, data = penguins)
+dat_groups2 = aggregate(
+body_mass_g ~ species * sex,
+data = penguins,
+FUN = c)
+str(dat_groups2)
+bartlett.test(dat_groups2$body_mass_g)
+dat_groups2 = aggregate(
+body_mass_g ~ species * sex,
+data = penguins,
+FUN = c)
+str(dat_groups2)
+both_bart = bartlett.test(dat_groups2$body_mass_g)
+boxplot(body_mass_g ~ species, data = penguins,
+ylab = "Body Mass (g)", xlab = "Species",
+main = "Penguin Body Mass by Species")
+boxplot(body_mass_g ~ sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "Sex",
+main = "Penguin Body Mass by Sex", names = c("Female", "Male"))
+boxplot(body_mass_g ~ species * sex, data = penguins,
+ylab = "Body Mass (g)", xlab = "", las = 2,
+names = c("Adelie \n Female", "Adelie \n Male",
+"Gentoo \n Female", "Gentoo \n Male",
+"Chinstrap \n Female", "Chinstrap \n Male"),
+main = "Penguin Body Mass by Species and Sex")
+dat_fl <- read.csv(here("data", "trees_FL.csv"))
+dat_fl <- read.csv(here("data", "trees_FL.csv"))
+head(dat_fl, 4)
+str(dat_fl)
+{
+dat_fl <- read.csv(here("data", "trees_FL.csv"))
+head(dat_fl, 4)
+str(dat_fl)
+}
+?barplot()
+par(mfrow = c(2, 2))
+barplot(dat_fl$ProbabilityofFailure)
+View(dat_fl)
+dat_fl$ProbabilityofFailure <- as.factor(dat_fl$ProbabilityofFailure)
+{
+dat_fl <- read.csv(here("data", "trees_FL.csv"))
+head(dat_fl, 4)
+str(dat_fl)
+dat_fl$ProbabilityofFailure <- as.factor(dat_fl$ProbabilityofFailure)
+str(dat_fl)
+}
+?table()
+sum(dat_fl$ProbabilityofFailure)
+barplot(dat_fl$ProbabilityofFailure)
+dat_fl <- read.csv(here("data", "trees_FL.csv"))
+head(dat_fl, 4)
+str(dat_fl)
+barplot(dat_fl$ProbabilityofFailure)
+{
+dat_fl <- read.csv(here("data", "trees_FL.csv"))
+head(dat_fl, 4)
+dat_fl$ProbabilityofFailure <- as.factor(dat_fl$ProbabilityofFailure)
+str(dat_fl)
+}
+barplot(dat_fl$ProbabilityofFailure)
+?barplot()
+barplot(formula = ProbabilityofFailure, data = dat_fl)
+barplot(ProbabilityofFailure, data = dat_fl)
+table(dat_fl$ProbabilityofFailure)
+{
+dat_fl <- read.csv(here("data", "trees_FL.csv"))
+head(dat_fl, 4)
+dat_fl$ProbabilityofFailure <- as.factor(dat_fl$ProbabilityofFailure)
+str(dat_fl)
+prob_fail <- table(dat_fl$ProbabilityofFailure)
+}
+barplot(prob_fail)
+dat_fl$Failure_Standardized <- as.factor(dat_fl$Failure_Standardized)
+str(dat_fl)
+stand_fail <- table(dat_fl$Failure_Standardized)
+barplot(stand_fail)
+barplot(prob_fail)
+barplot(stand_fail)
+hist(dat_fl$DBH_in)
+?plot()
+barplot(prob_fail)
+barplot(stand_fail)
+hist(dat_fl$DBH_in)
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft)
+par(mfrow = c(2, 2))
+barplot(prob_fail)
+barplot(stand_fail)
+hist(dat_fl$DBH_in)
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft)
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Tree Counts Per \n Failure Probability")
+barplot(stand_fail)
+hist(dat_fl$DBH_in)
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft)
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Prob")
+barplot(stand_fail)
+hist(dat_fl$DBH_in)
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft)
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Class")
+barplot(stand_fail)
+hist(dat_fl$DBH_in)
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft)
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Probability")
+barplot(stand_fail, main = "")
+hist(dat_fl$DBH_in)
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft)
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Probability")
+barplot(stand_fail, main = "Counts Per Failure Class")
+hist(dat_fl$DBH_in, main = "Tree Diameters")
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, main = "Tree Diameters By Height")
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Probability")
+barplot(stand_fail, main = "Counts Per Failure Class")
+hist(dat_fl$DBH_in, main = "Tree Diameters",
+xlab = "Diameter at Breast Height (in)")
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, main = "Tree Diameters By Height")
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Probability")
+barplot(stand_fail, main = "Counts Per Failure Class")
+hist(dat_fl$DBH_in, main = "Tree Diameters",
+xlab = "Diameter at Breast Height (in)")
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, main = "Tree Diameters By Height",
+xlab = "Diameter at Breast Height (in)" ylab = "Tree Height (ft)")
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Probability")
+barplot(stand_fail, main = "Counts Per Failure Class")
+hist(dat_fl$DBH_in, main = "Tree Diameters",
+xlab = "Diameter at Breast Height (in)")
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, main = "Tree Diameters By Height",
+xlab = "Diameter at Breast Height (in)", ylab = "Tree Height (ft)")
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Probability",
+xlab = "Failure Likelihood Categories")
+barplot(stand_fail, main = "Counts Per Failure Class", xlab = "Failure Class")
+hist(dat_fl$DBH_in, main = "Tree Diameters",
+xlab = "Diameter at Breast Height (in)")
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, main = "Tree Diameters By Height",
+xlab = "Diameter at Breast Height (in)", ylab = "Tree Height (ft)")
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Probability",
+xlab = "Failure Likelihood Categories")
+barplot(stand_fail, main = "Counts Per Failure Class", xlab = "Failure Class")
+hist(dat_fl$DBH_in, main = "Tree Diameters",
+xlab = "Diameter at Breast Height (in)")
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, main = "Tree Diameters By Height",
+xlab = "Diameter at Breast Height (in)", ylab = "Tree Height (ft)",
+col = adjustcolor("black", alpha.f = 0.1))
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Probability",
+xlab = "Failure Likelihood Categories")
+barplot(stand_fail, main = "Counts Per Failure Class", xlab = "Failure Class")
+hist(dat_fl$DBH_in, main = "Tree Diameters",
+xlab = "Diameter at Breast Height (in)")
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, main = "Tree Diameters By Height",
+xlab = "Diameter at Breast Height (in)", ylab = "Tree Height (ft)",
+col = adjustcolor("black", alpha.f = 0.1), cex = 1)
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Probability",
+xlab = "Failure Likelihood Categories")
+barplot(stand_fail, main = "Counts Per Failure Class", xlab = "Failure Class")
+hist(dat_fl$DBH_in, main = "Tree Diameters",
+xlab = "Diameter at Breast Height (in)")
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, main = "Tree Diameters By Height",
+xlab = "Diameter at Breast Height (in)", ylab = "Tree Height (ft)",
+col = adjustcolor("black", alpha.f = 0.1), cex = 0.5)
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Probability",
+xlab = "Failure Likelihood Categories")
+barplot(stand_fail, main = "Counts Per Failure Class", xlab = "Failure Class")
+hist(dat_fl$DBH_in, main = "Tree Diameters",
+xlab = "Diameter at Breast Height (in)")
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, main = "Tree Diameters By Height",
+xlab = "Diameter at Breast Height (in)", ylab = "Tree Height (ft)",
+col = adjustcolor("black", alpha.f = 0.1), cex = 0.25)
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Probability",
+xlab = "Failure Likelihood Categories")
+barplot(stand_fail, main = "Counts Per Failure Class", xlab = "Failure Class")
+hist(dat_fl$DBH_in, main = "Tree Diameters",
+xlab = "Diameter at Breast Height (in)")
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, main = "Tree Diameters By Height",
+xlab = "Diameter at Breast Height (in)", ylab = "Tree Height (ft)",
+col = adjustcolor("black", alpha.f = 0.1), cex = 0.5)
+?ks.test()
+View(dat_fl)
+View(dat_fl)
+dat_dbh <- droplevels(subset(dat_fl, Failure_Standardized == "branch"))
+str(dat_dbh)
+dat_dbh <- droplevels(subset(dat_fl, Failure_Standardized != "branch"))
+str(dat_dbh)
+dat_dbh <- droplevels(subset(dat_fl, Failure_Standardized != "branch"))
+str(dat_dbh)
+ks.test(DBH_in ~ Failure_Standardized, data = dat_dbh)
+dat_dbh <- droplevels(subset(dat_fl, Failure_Standardized != "branch"))
+str(dat_dbh)
+tree_ks <- ks.test(DBH_in ~ Failure_Standardized, data = dat_dbh)
+is.na(dat_fl)
+sum(is.na(dat_fl))
+par(mfrow = c(2, 2))
+barplot(prob_fail, main = "Counts Per Failure Probability",
+xlab = "Failure Likelihood Categories")
+barplot(stand_fail, main = "Counts Per Failure Class", xlab = "Failure Class")
+hist(dat_fl$DBH_in, main = "Tree Diameters",
+xlab = "Diameter at Breast Height (in)")
+plot(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, main = "Tree Diameters By Height",
+xlab = "Diameter at Breast Height (in)", ylab = "Tree Height (ft)",
+col = adjustcolor("black", alpha.f = 0.1), cex = 0.5)
+?cor.test()
+cor.test(HeighttoTop_ft ~ DBH_in, data = dat_fl
+use='complete.obs',
+cor.test(HeighttoTop_ft ~ DBH_in, data = dat_fl,
+use='complete.obs',
+method='spearman')
+cor.test(formula = HeighttoTop_ft ~ DBH_in, data = dat_fl,
+use='complete.obs',
+method='spearman')
+cor.test(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, use='complete.obs', method='spearman')
+cor.test(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, use='complete.obs')
+cor.test(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, use='complete.obs', method='spearman')
+tree_cor <- cor.test(dat_fl$DBH_in, dat_fl$HeighttoTop_ft,
+use='complete.obs', method='spearman')
+cor.test(dat_fl$DBH_in, dat_fl$HeighttoTop_ft,
+use='complete.obs')
+View(tree_cor)
+cor.test(dat_fl$DBH_in, dat_fl$HeighttoTop_ft,
+use='complete.obs', method='spearman')
+tree_cor <- cor.test(dat_fl$DBH_in, dat_fl$HeighttoTop_ft,
+use='complete.obs', method='spearman')
+library(tidyverse)
+library(magrittr)
+install.packages("kableExtra")
+library(kableExtra)
+dat_fl$fail = factor(dat_fl$Failure_Standardized != "none")
+levels(dat_fl$fail) = c("No Fail", "Fail")
+fl_table_2 = table(
+dat_fl$ProbabilityofFailure,
+dat_fl$fail)
+fl_table_2
+dat_fl$fail = factor(dat_fl$Failure_Standardized != "none")
+levels(dat_fl$fail) = c("No Fail", "Fail")
+fl_table_2 = table(dat_fl$ProbabilityofFailure, dat_fl$fail)
+fl_table_2
+chi_tree <- chisq.test(fl_table_2)
+chi_tree
+View(chi_tree)
+View(chi_tree)
+View(chi_tree)
+View(chi_tree)
+chi_tree$residuals
+chi_tree$observed
+chi_tree$expected
+chi_tree$residuals
+chi_tree$residuals
+chi_tree$expected
+chi_tree$observed
+{
+dat_fl <- read.csv(here("data", "trees_FL.csv"))
+head(dat_fl, 4)
+dat_fl$ProbabilityofFailure <- as.factor(dat_fl$ProbabilityofFailure)
+dat_fl$Failure_Standardized <- as.factor(dat_fl$Failure_Standardized)
+str(dat_fl)
+prob_fail <- table(dat_fl$ProbabilityofFailure)
+stand_fail <- table(dat_fl$Failure_Standardized)
+}

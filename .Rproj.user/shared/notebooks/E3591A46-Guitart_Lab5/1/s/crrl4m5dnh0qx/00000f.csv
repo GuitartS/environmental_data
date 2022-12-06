@@ -1,0 +1,4 @@
+"0","exp_fun = function(x, a, b)"
+"0","{"
+"0","  return(a * exp(-b * x))"
+"0","}"

@@ -1,0 +1,6 @@
+"0","{"
+"0","plot(dat_dispersal$dist.class, dat_dispersal$disp.rate.ftb,"
+"0","    xlim = c(0, 1500), xlab = ""Distance Class"", ylab = ""Standardized Dispersal Rate"", "
+"0","    main = ""Marbled Salamander First Time Breeders Linear Model"")"
+"0","curve(line_point_slope(x, 800, 0.2, -0.0003), add = T)"
+"0","}"

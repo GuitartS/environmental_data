@@ -1,0 +1,5 @@
+"0","library(here)"
+"2","here() starts at /Users/sarahguitart/environmental_data
+"
+"0","rope <- read.csv(here(""data"", ""rope.csv""))"
+"0","head(rope)"

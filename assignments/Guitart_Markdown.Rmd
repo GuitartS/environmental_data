@@ -1,0 +1,30 @@
+---
+title: "R Markdown Documents - Part 1"
+subtitle: "Analysis of Environmental Data"
+author: "Sarah Guitart"
+output: 
+  html_notebook:
+    toc: true
+    toc_float: true 
+    theme: darkly
+---
+
+
+# Hello, my name is **Sarah Guitart** and I am a first semester Master's student in the *ECo Department*
+
+
+# I am excited to learn the following items:
+
+1. What modeling means and how to build a model from scratch 
+2. How to use statistics in environmental research and conservation
+3. How to make pretty graphs 
+
+
+
+# This is my first semester, so some of the classes I really enjoyed from my graduate certificate through Oregon State University were:
+
+* Antarctic Science
+* Avian Conservation and Management 
+* Wildlife Management 
+
+

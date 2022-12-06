@@ -1,0 +1,173 @@
+---
+title: "Analysis of Environmental Data - Lab Exercise #7"
+author: "Sarah Guitart"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly 
+---
+
+Students I worked with: Ian Eggleston 
+
+### Q1
+
+*What is the sample size, n? Show the code you used for the calculation and remember to check for missing data.*
+
+A: The sample size is `r n`. 
+```{r}
+library(palmerpenguins)
+head(penguins, 4)
+gentoo <- droplevels(subset(penguins, species == "Gentoo"))
+head(gentoo,3)
+sum(is.na(gentoo$bill_length_mm))
+n = length(na.omit(gentoo$bill_length_mm))
+n
+```
+
+### Q2
+
+*What is the sample standard deviation? Show the code you used for the calculation.*
+
+A: The standard deviation is 3.08. 
+```{r}
+round(sd(gentoo$bill_length_mm, na.rm = TRUE), digits = 2)
+```
+
+### Q3
+
+*What are the critical t-values? Show the R code you used for the calculation.*
+
+A. The critical t values are -1.98 and 1.98. 
+```{r}
+t_crit = qt(c(0.025, 0.975), df = n - 1)
+t_crit
+```
+
+### Q4
+
+*What is the sample standard error? Show the R code you used for the calculation.*
+
+A. The sample standard error is 0.28. 
+```{r}
+sse = sd(gentoo$bill_length_mm, na.rm = TRUE) / sqrt(n)
+sse
+```
+
+### Q5
+
+*Finally, construct the CI and show the R code you used for the calculation.*
+
+A. The confidence interval is `r gentoo_ci[2]` - `r gentoo_ci[3]`
+```{r}
+ci_radius <- sse * abs(t_crit[1])
+ci_radius
+gentoo_ci = round(c(mean = mean(gentoo$bill_length_mm, na.rm = T),
+  lower = mean(gentoo$bill_length_mm, na.rm = T) - ci_radius,
+  upper = mean(gentoo$bill_length_mm, na.rm = T) + ci_radius), digits = 2)
+gentoo_ci
+```
+
+### Q6 - Q8
+
+*What is the CI? Show the code you used to call the boot function and calculate the upper and lower 2.5% quantiles.*
+
+A. The confidence interval is `r boot_ci[1]` - `r boot_ci[2]`. 
+```{r}
+library(boot)
+boot_mean = function(x, i)
+{
+  return(mean(x[i], na.rm = TRUE))
+}
+myboot = 
+  boot(
+    data = gentoo$bill_length_mm,
+    statistic = boot_mean,
+    R = 10000)
+boot_ci <- round(quantile(myboot$t, c(0.025, 0.975)), digits = 2)
+boot_ci
+```
+
+### Q9
+
+*Show your completed rarefaction_sampler() function.*
+```{r}
+library(here)
+moths = read.csv(here("data", "moths.csv"))
+moth_dat = moths[,-1]
+
+rarefaction_sampler = function(input_dat, n_iterations)
+{
+  n_input_rows = nrow(input_dat)
+
+  results_out = matrix(
+    nrow = n_iterations,
+    ncol = n_input_rows)
+
+  # The outer loop: runs once for each bootstrap iteration.  index variable is i
+  for(i in 1:n_iterations)
+  {
+    # The inner loop: simulates increasing sampling intensity
+    # Sampling intensity ranges from 1 site to the complete count of
+    # sites in the input data (n)
+    for(j in 1:n_input_rows)
+    {
+      # sample the input data row indices, with replacement
+      rows_j = sample(n_input_rows, size = j, replace=TRUE)
+
+      # Creates a new data matrix
+      t1 = input_dat[rows_j, ]
+
+      # Calculates the column sums
+      t2 = apply(t1, 2, sum)
+
+      # Counts the number of columns in which any moths were observed
+      results_out[i, j] = sum(t2 > 0)
+    }
+  }
+  return(results_out)
+}
+
+rarefact = rarefaction_sampler(moth_dat, 100)
+head(rarefact, 3)
+```
+### Q10
+
+*What did you find most difficult about building the function?*
+
+A. The most difficult thing about building the function was all the complicated jargon surrounding the fairly easy to find error. Identifying the error and fixing it was actually pretty simple, it just took some time to get comfortable realizing that I could fix it without getting overwhelmed by code. 
+
+### Q11
+
+*Show the code you used to perform the simulations and construct the curve.*
+```{r}
+rarefact = rarefaction_sampler(moth_dat, 1000)
+rare_mean = apply(rarefact, 2, mean)
+rare_quant = apply(rarefact, 2, quantile, probs=c(0.025, 0.975))
+rare = t(rbind(rare_mean, rare_quant))
+```
+
+### Q12
+
+*Include your rarefaction curve plot in your report. Show the R-code you used to create your plot.*
+```{r}
+matplot(
+  rare,
+  type='l', lwd = 1.5,
+  xlab='Number of Plots Sampled',
+  ylab='Number of Species Observed',
+  main="Moth Spp Observed with Increased Sampling")
+
+legend(
+  'bottomright',
+  legend=c('Mean','Lower 95% CI','Upper 95% CI'), title = "Confidence Envelope",
+  lty=c(1,2,3),col=c(1,2,3), inset=c(.1,.1), lwd = 1.5)
+
+polygon(c(1:24, 24:1), c(rare[,2], rev(rare[,3])), col = adjustcolor("grey30", alpha.f = 0.3), border = NA)
+```
+
+### Q13
+
+*About how many sites should you visit if you want to see all of the moth species? Explain your reasoning using your rarefaction curve figure.*
+
+A. If all 10 moth species need to confirmed, all 24 sites should be sampled. From our rarefaction curve, we can see that even as the mean approaches 10, our confidence interval tells us that the average number of species seen will be between 9 and 10 95% of the time even as we sample all 24 plots. However, if cost and timing are an issue, I believe we will likely see all 10 species after sampling 12 plots. 

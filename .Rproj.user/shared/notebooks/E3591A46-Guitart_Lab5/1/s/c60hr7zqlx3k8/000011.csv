@@ -1,0 +1,7 @@
+"0","{"
+"0","resids_linear <- (line_point_slope(dat_dispersal$dist.class, 800, 0.2, -0.0003) - dat_dispersal$disp.rate.ftb)"
+"0","resids_exp <- (exp_fun(dat_dispersal$dist.class, 0.95, 0.003) - dat_dispersal$disp.rate.ftb)"
+"0","resids_ricker <- (ricker_fun(dat_dispersal$dist.class, .6/300, 1/500) - dat_dispersal$disp.rate.ftb)"
+"0","resids <- data.frame(resids_linear, resids_exp, resids_ricker)"
+"0","head(resids, 3)  "
+"0","}"

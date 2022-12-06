@@ -1,0 +1,3 @@
+"0","fit_pen <- lm(body_mass_g ~ species, data = pen_fem)"
+"0","pen_resids <- residuals(fit_pen)"
+"0","pen_shapiro <- shapiro.test(pen_resids)"

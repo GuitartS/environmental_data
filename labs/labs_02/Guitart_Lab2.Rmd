@@ -1,0 +1,112 @@
+---
+title: "Analysis of Environmental Data"
+subtitle": "Lab Exercise #2"
+author: "Sarah Guitart"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly 
+---
+
+## Logical Subsetting
+
+# 1. Show the R code you used to create vec_2
+
+```{r}
+# Run the following code
+n = 12345
+vec_1 = sample(12, n, replace = TRUE)
+head(vec_1)
+```
+```{r}
+# Use a logical test operator to create a Boolean vector (called vec_2) whose entries are TRUE if the corresponding entry in vec_1 is 3 and FALSE otherwise.
+vec_2 <- vec_1 == 3 
+head(vec_2)
+vec_1[vec_2]
+```
+
+# 2. Give two reasons why determining which elements in vec_1 have value 3 by visual inspection is a bad idea.
+
+1. Each time the function in vec_1 runs, it is generated randomly. It would not be the same each time you run the function. 
+2. You could easily make a mistake. 
+
+```{r}
+# run this code for the next three questions
+length(vec_1)
+sum(vec_1 == 3)
+n = 10
+vec_1 = sample(12, n, replace = TRUE)
+paste0("Sum of elements with value 3: ", sum(vec_1 == 3))
+```
+
+# 3. Why didn't you get the same count of 3 entries each time?
+
+We did not get the same count of 3 entries each time because the vector is randomly picking numbers. Every time we run the function, the random selection starts over, so it will not be the same result every time. If one of the values is 3, it returns TRUE, otherwise it returns FALSE. TRUE is equal to 1 and FALSE is equal to 0. By using the sum() function, we are adding up the numeric values of TRUE and FALSE, so we know how many times the function returned 3 each time we ran it. 
+
+# 4. Considering the different vectors generated each time, explain why using a logical test is a safe way to select entries with a value of 3.
+
+Using a logical test is a safe way to select entries with a value of 3 because it can account for the randomness of the vector. Rather than us running the vector every time, we can use a logical test and know have many times we have a value of 3. 
+
+# 5. Explain why performing logical ‘by hand’ subsetting is very very bad practice. Your answer should cite at least two reasons why ‘by hand’ subsetting is bad.
+
+Performing logical 'by hand' subsetting is a bad idea because it is time-consuming, prone to errors, and extremely difficult to do with large data sets.
+
+# 6. Provide the code for your modified loop. It must run as a self-contained example on a fresh R session on my computer.
+
+```{r}
+print(
+    for (i in 1:10)   
+    {
+      print(paste("This is loop iteration:", i)
+        )
+    }
+  )
+```
+
+# 7. Provide the code for the modified loop that executes n times. It needs to be a self contained example. I should be able to set the value of n and then run your loop on my computer.
+
+```{r}
+n <- 5
+for (i in 1:n)
+{
+  print(i)
+}
+```
+
+# 8. Provide the code you used to create the n, vec_1, and the loop. As always, it should run as a stand-alone example in a fresh R session on my computer.
+
+```{r}
+n <- 17
+vec_1 = sample(10, n, replace = TRUE)
+vec_1
+print(
+    for (i in 1:n)   
+    {
+      print(paste("The element of vec_1 at index", i,"is", vec_1[i])
+        )
+    }
+  )
+```
+
+# 9. Provide the code you used to build your function.
+
+To receive full credit your code must run without error on a new R session and produce output similar to the examples given in the instructions.
+
+```{r}
+create_and_print_vec = function(n, min = 1, max= 10)
+{
+  vec_2 <- sample(x = min:max, size = n, replace = TRUE)
+  print(for (i in 1:n)   
+    {
+      print(paste("The element at index", i, "is", vec_2[i])
+        )
+    }
+  )
+}
+create_and_print_vec(5)
+```
+
+# 10. Students I worked with
+
+Johanna Ravenhurst 

@@ -1,0 +1,10 @@
+"0","saveWidget(
+  rglwidget(),
+  file = here(
+    ""docs"", ""webGL"",
+    ""n_popdispersion_power_sim_plot.html""),
+  selfcontained = TRUE)
+"
+"2","[WARNING] "
+"2","Deprecated: --self-contained. use --embed-resources --standalone
+"

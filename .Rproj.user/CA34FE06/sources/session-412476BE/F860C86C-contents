@@ -1,0 +1,13 @@
+---
+title: "Sarah Guitart's Homepage"
+author: "Sarah Guitart"
+date: "2022-12-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Welcome to Sarah's class page!
+

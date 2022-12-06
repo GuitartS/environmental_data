@@ -1,0 +1,109 @@
+---
+title: "Data Exploration and Deterministic Functions"
+author: "Sarah Guitart"
+date: "2022-10-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r install_packages}
+# Install packages 
+install.packages("here", repos="http://cran.us.r-project.org")
+require(here)
+```
+
+```{r load_dataset}
+# Create data frame and inspect it 
+dat_habitat <- read.csv(here("data", "hab.sta.csv"))
+str(dat_habitat)
+head(dat_habitat, 3)
+dim(dat_habitat)
+```
+### Q1
+
+Create histograms for elevation, slope, and aspect within one plot. 
+```{r terrain_hists, fig.width = 5, fig.height = 7}
+# Create histograms of the three terrain variables in one plot
+par(mfrow = c(3, 1))
+hist(dat_habitat$elev, main = "Histogram of Sampling Site Elevation",
+     xlab = "Elevation")
+hist(dat_habitat$slope, main = "Histogram of Sampling Site Slope",
+     xlab = "Slope")
+hist(dat_habitat$aspect, breaks = 20, main = "Histogram of Sampling Site Aspect",
+     xlab = "Aspect")
+```
+
+### Q2
+
+**Consider the distribution of elevations at the bird census sample sites.**
+
+The sampling sites within this dataset tend to fall in the mid to lower elevation category. The majority of sites are found at 450 meters in elevation and below, with the most commonly seen elevations ranging between 200 and 450 meters. The number of sites 450 meters and above decreases quickly and continues to decrease as we gain elevation, until we are left with only a few sites above 800 meters. 
+
+### Q3
+
+**What are the units of slope in this dataset?**
+
+The units of slope in this dataset are in percent of slope. This is found by dividing the gain in elevation by the horizontal distance covered and multiplying by 100. So sites with 20-30% slope have a gentler incline and sites above 100% slope are incredibly steep. 
+
+### Q4
+
+**Consider the distribution of slopes at the bird census sample sites.**
+
+Almost all of the sampling sites within this dataset are located on sloped terrain, with less than 50 sites of this 1,046 site dataset falling within the flatter, 0-10% slope range. However, more sites are found on shallower slopes and the majority of sites are found in areas with a slope between 40-80%. Past 80%, the frequency of steep sites decreases rapidly and the least number of sites are located on 90-100+% slope. 
+
+### Q5
+
+**Briefly define aspect, describing the units used in the dataset.**
+
+Aspect is the direction a slope faces. In this dataset, it is measured in degrees like in a compass. An aspect measurement of 90 degrees would mean an east-facing slope, and a measurement of 270 degrees would mean a west-facing slope. 
+
+### Q6
+
+**Consider the distribution of aspect at the bird census sample sites.**
+
+Sampling sites are distributed relatively evenly throughout the different slope measurements. This means that each slope orientation is fairly well represented within this dataset. There does seem to be more sites located on slopes oriented between south-southwest to north than there are between north-northeast to south. In particular, slopes facing east-southeast to south seem to be less frequent throughout this dataset. Overall, it is more evenly distributed than other measurements we've seen thus far. 
+
+### Q7
+```{r scatterplot, fig.width = 5, fig.height = 7}
+# Create scatterplots of all three terrain variables and total basal area into one plot and fit a linear function to each terrain variable. 
+# First make the line
+line_point_slope = function(x, x1, y1, slope)
+{
+  get_y_intercept = 
+    function(x1, y1, slope) 
+      return(-(x1 * slope) + y1)
+  
+  linear = 
+    function(x, yint, slope) 
+      return(yint + x * slope)
+  
+  return(linear(x, get_y_intercept(x1, y1, slope), slope))
+}
+par(mfrow = c(3, 1))
+plot(dat_habitat$elev, dat_habitat$ba.tot, main = "Basal Area and Elevation",
+     xlab = "Elevation", ylab = "Total Basal Area")
+curve(line_point_slope(x, x1 = 400, y1 = 45, slope = -0.05), add = TRUE)
+
+plot(dat_habitat$slope, dat_habitat$ba.tot, main = "Basal Area and Slope",
+     xlab = "Elevation", ylab = "Total Basal Area")
+curve(line_point_slope(x, x1 = 20, y1 = 10, slope = 0.1), add = TRUE)
+
+plot(dat_habitat$aspect, dat_habitat$ba.tot, main = "Basal Area and Aspect",
+     xlab = "Elevation", ylab = "Total Basal Area")
+curve(line_point_slope(x, x1 = 50, y1 = 25, slope = 0.05), add = TRUE)
+```
+
+### Q8
+
+**For each terrain variable (elevation, slope, aspect), describe the relationship you observe and your model fit.**
+
+For elevation, there does seem to be some association between total basal area and elevation. Total basal area tends to increase as elevation increases, but then reaches a peak and starts to decrease around 400 meters, and is slightly skewed towards lower elevations. While there could be a relationship, it isn't linear but more of a quadratic association. Because of this, a linear model is not a good fit for this data. 
+
+For slope, there may be an association, given that the density of our data points starts to decrease right around 80 percent slope. However, the association is definitely not linear and a linear model is not a good fit for this data. 
+
+For aspect, there does not seem to be any association between the two variables. Since there is no visible association, it is not a linear relationship and a linear model does not work for these particular variables. 
+
+

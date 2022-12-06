@@ -1,0 +1,8 @@
+"0","```r
+{
+dat_bird <- read.csv(here(\"data\", \"bird.sub.csv\"))
+dat_hab <- read.csv(here(\"data\", \"hab.sub.csv\"))
+dat_all = merge(dat_bird, dat_hab, by = c(\"basin\", \"sub\"))
+head(dat_all[, c(\"b.sidi\", \"s.sidi\")])
+}
+```"

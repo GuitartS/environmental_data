@@ -1,0 +1,6 @@
+"0","```r
+dat_random2$y_predict <- line_point_slope(dat_random2$x, guess_x, guess_y, guess_slope)
+head(dat_random2, 3)
+dat_random2$resids <- dat_random2$y_predict - dat_random2$y
+head(dat_random2, 3)
+```"

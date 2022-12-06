@@ -1,0 +1,44 @@
+---
+title: "Analysis of Environmental Data - R Reference Guide"
+author: "Sarah Guitart"
+date: "2022-12-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# R Reference Guide {.tabset .tabset-pills}
+
+
+## Loading Data and Packages
+
+
+## Data Structures
+
+```{r}
+
+```
+
+## Subsetting
+
+
+```{r pressure}
+
+```
+
+
+## Numerical Data Exploration
+
+```{r}
+
+```
+
+## Graphical Data Exploration
+
+```{r}
+
+```
+
+## Distribution Functions 

@@ -1,0 +1,16 @@
+"0","```r
+plot(
+  density(result_mc),
+  main = \"Null and Alternative Distribution Densities\",
+  xlab = \"Slope Coefficient\", xlim = c(-0.05, 0.05), ylim = c(0, 65),
+  col = \"blue\", lwd = 2)
+lines(density(result_boot), col = \"red\", lwd = 2)
+```"
+"0","```r
+legend(x = \"topright\", lty = 1, lwd= 2, col = c(\"red\", \"blue\"), 
+       legend = c(\"Alternative\", \"Null\"), bty = \"n\")
+polygon(density(result_mc), col = adjustcolor(\"blue\", alpha.f = 0.3), border = NA)
+```"
+"0","```r
+polygon(density(result_boot), col = adjustcolor(\"red\", alpha.f = 0.3), border = NA)
+```"

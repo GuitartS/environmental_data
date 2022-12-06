@@ -1,0 +1,1 @@
+"0","fit_both = lm(formula = body_mass_g ~ species * sex, data = penguins)"

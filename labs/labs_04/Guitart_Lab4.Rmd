@@ -1,0 +1,196 @@
+---
+title: "Analysis of Environmental Data"
+subtitle": "Lab Exercise #4"
+author: "Sarah Guitart"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly 
+---
+
+Students I worked with: No additional students 
+
+### Q1
+
+*Create four vectors of normally-distributed random numbers, norm_17, norm_30, norm_300, and norm_3000.*
+```{r vectors}
+mean1 <- 10.4
+sd1 <- 2.4 
+norm_17 = rnorm(n = 17, mean = mean1, sd = sd1)
+norm_30 = rnorm(n = 30, mean = mean1, sd = sd1)
+norm_300 = rnorm(n = 300, mean = mean1, sd = sd1)
+norm_3000 = rnorm(n = 3000, mean = mean1, sd = sd1)
+```
+
+### Q2
+
+*Include the R code you used to create your figure. Your answer should include code that builds the figure as well as saves it to a file.*
+```{r figure_code}
+library(here)
+png(filename = here("lab_04_hist_01.png"), 
+    width = 1500, height = 1600, res = 180)
+par(mfrow = c(2, 2))
+hist(norm_17, main = "17 Randomly Generated Points",
+     xlab = "Point Values")
+hist(norm_30, main = "30 Randomly Generated Points",
+     xlab = "Point Values")
+hist(norm_300, main = "300 Randomly Generated Points",
+     xlab = "Point Values")
+hist(norm_3000, main = "3000 Randomly Generated Points",
+     xlab = "Point Values")
+dev.off()
+```
+
+### Q3
+
+*Upload your lab_04_hist_01.png file to Moodle. Make sure you double check the image size and resolution requirements.*
+
+### Q4
+
+*Qualitatively describe the differences among the histograms.*
+
+The differences among the histograms are that they become more normally distributed as the sample size increases. The histograms of 17 and 30 randomly generated points are the least normally distributed. On the 17 point histogram, the point value with the greatest frequency is one standard deviation away from the mean value. The 3000 point histogram is the most normally distributed, with the highest frequency of values occurring around the mean, and then evenly tapering off as the values increase or decrease from the mean. 
+
+### Q5
+
+*Explain why the shapes of the histograms are different*
+
+The shape of the histograms are different because of their sample size. As sample sizes increase, they become more normally distributed. 
+
+### Q6
+
+*What are the parameters and their values for the standard Normal distribution?*
+
+The parameters for the standard Normal distribution are standard deviation and mean. In a standard Normal distribution, the mean has a value of 0 and the standard deviation has a value of 1. 
+
+### Q7
+
+*Include the R code you used to create your figure. Your answer should include code that builds the figure as well as saves it to a file.*
+```{r standard_dist}
+xs = seq(0, 22, length.out = 1000)
+ys = dnorm(xs, mean = mean1, sd = sd1)
+svg("norm_1.svg", width = 7, height = 7)
+plot(xs, ys, main = "Normal PDF: mean 10.4, sd 2.4", type = "l", xlim = c(1, 20))
+abline(h = 0)
+dev.off()
+```
+
+### Q8
+
+*Upload norm_1.svg (or norm_1.pdf).*
+
+### Q9
+
+*Show the R code you used to create one of the random datasets in your figure.*
+```{r random_data}
+n_pts = 30
+x_min = 1
+x_max = 10
+set.seed(50)
+x_random = runif(n = n_pts, min = x_min, max = x_max)
+y_random = rnorm(n = n_pts)
+dat_random = data.frame(x = x_random, y = y_random)
+hist(dat_random$x, main = "Histogram of dat_random", xlab = "x", col = "greenyellow")
+```
+
+### Q10 
+
+*Upload an image file of your figure. It may be in png (raster graphics), svg (vector graphics), or pdf (vector graphics) format.*
+
+```{r, random_figures}
+n_pts2 = 50
+x_min2 = 0
+x_max2 = 100
+set.seed(3)
+x_random2 = runif(n = n_pts2, min = x_min2, max = x_max2)
+y_random2 = rnorm(n = n_pts2)
+dat_random2 = data.frame(x = x_random2, y = y_random2)
+
+n_pts3 = 30
+x_min3 = 5
+x_max3 = 20
+set.seed(5)
+x_random3 = runif(n = n_pts3, min = x_min3, max = x_max3)
+y_random3 = rnorm(n = n_pts3)
+dat_random3 = data.frame(x = x_random3, y = y_random3)
+
+n_pts4 = 50
+x_min4 = 1
+x_max4 = 10
+set.seed(55)
+x_random4 = runif(n = n_pts4, min = x_min4, max = x_max4)
+y_random4 = rnorm(n = n_pts4)
+dat_random4 = data.frame(x = x_random4, y = y_random4)
+
+png(filename = here("Guitart_RandomFigures.png"), 
+    width = 1600, height = 1600)
+par(mfrow = c(2, 2))
+hist(dat_random$x, main = "Histogram of dat_random", xlab = "x", col = "greenyellow")
+plot(y ~ x, data = dat_random2, main = "Scatterplot of dat_random2", pch = 18, cex = 2, col = "lightpink3")
+boxplot(dat_random3, main = "Boxplot of dat_random3", col = "steelblue")
+hist(dat_random4$y, main = "Histogram of dat_random4", xlab = "y", col = "magenta1")
+dev.off()
+```
+
+
+### Q11
+
+*Show the R code you used to create one of the random datasets in your figure.*
+```{r random_model}
+line_point_slope = function(x, x1, y1, slope)
+{
+  get_y_intercept = 
+    function(x1, y1, slope) 
+      return(-(x1 * slope) + y1)
+  
+  linear = 
+    function(x, yint, slope) 
+      return(yint + x * slope)
+  
+  return(linear(x, get_y_intercept(x1, y1, slope), slope))
+}
+guess_x = 1
+guess_y = .5
+guess_slope = -.009  
+  
+n_pts2 = 50
+x_min2 = 0
+x_max2 = 100
+set.seed(3)
+x_random2 = runif(n = n_pts2, min = x_min2, max = x_max2)
+y_random2 = rnorm(n = n_pts2)
+dat_random2 = data.frame(x = x_random2, y = y_random2)
+```
+
+### Q12
+
+*Upload an image file of your figure. It may be in png (raster graphics), svg (vector graphics), or pdf (vector graphics) format.*
+```{r}
+png(filename = here("Guitart_RandomModel.png"), 
+    width = 700, height = 600)
+plot(y ~ x, data = dat_random2, main = "Scatterplot of dat_random2", pch = 18, cex = 2, col = "lightpink3")
+curve(line_point_slope(x, guess_x, guess_y, guess_slope), add = T)
+dev.off()
+```
+
+### Q13
+
+*Paste the R code you used to create create the columns of predicted values and residuals.*
+```{r, residvalues}
+dat_random2$y_predict <- line_point_slope(dat_random2$x, guess_x, guess_y, guess_slope)
+head(dat_random2, 3)
+dat_random2$resids <- dat_random2$y_predict - dat_random2$y
+head(dat_random2, 3)
+```
+
+### Q14
+
+*In your report, include the two following figures: A) a histogram of the model’s residuals and B) a scatterplot of your model’s predicted values (on the x-axis) and residuals (on the y-axis).*
+```{r resid_figures, fig.width = 7, fig.height = 10}
+par(mfrow = c(2, 1))
+hist(dat_random2$resids, main = "Histogram of Residuals", xlab = "Residual Values",
+     col = "mediumorchid")
+plot(dat_random2$y_predict, dat_random2$y, main = "Residual Scatterplot", 
+     xlab = "Predicted Values", ylab = "Observed Values", pch = 15, cex = 2, col = "cadetblue")
+```

@@ -1,0 +1,110 @@
+---
+title: "Analysis of Environmental Data - Frequentist Concepts"
+author: "Sarah Guitart"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly 
+---
+
+### Q1. 
+
+*What is the probability of observing a count of exactly 3 successes in a binomial distribution with parameters n = 4 and p = 0.75? Include your R code.*
+
+A. The probability of observing exactly 3 successes is 0.42.
+
+```{r}
+dbinom(3, 4, 0.75)
+```
+
+### Q2.
+
+*What is the probability of observing a count of 3 successes or fewer in a binomial distribution with parameters n = 4 and p = 0.75? Include your R code.*
+
+A. The probability of observing a count of 3 or less successes is 0.68.
+```{r}
+pbinom(3, 4, 0.75)
+```
+
+### Q3.
+
+*What is the probability of observing more than 3 successes in a binomial distribution with parameters n = 5 and p = 0.75? Include your answer and the R code you used to find it.*
+
+A. The probability of observing more than 3 successes is 0.63.
+
+```{r}
+1 - pbinom(3, 5, 0.75)
+```
+
+### Q4.
+
+*What is the probability of observing a value of less than 1.2 from a normally-distributed population with mean = 2 and standard deviation = 2?*
+
+A. The probability of observing a value of less than 1.2 is 0.34. 
+```{r}
+pnorm(1.2, mean = 2, sd = 2)
+```
+
+### Q5. 
+
+*What is the probability of observing a value of greater than 1.2 from a normally-distributed population with mean = 2 and standard deviation = 2?*
+
+A. The probability of observing a value of greater than 1.2 is 0.66.
+```{r}
+1 - pnorm(1.2, mean = 2, sd = 2)
+```
+
+### Q6.
+
+*What is the probability of observing a value between 1.2 and 3.2 from a normally-distributed population with mean = 2 and standard deviation = 2?*
+
+A. The probability of observing a value between 1.2 and 3.2 is 0.38.
+```{r}
+pnorm(3.2, 2, 2) - pnorm(1.2, 2, 2)
+```
+
+### Q7.
+
+*Describe how the shape of the histogram changes as you continue to press the sample button.*
+
+A. The shape of the histogram changes to start following the skew of our distribution. 
+
+### Q8.
+
+*Describe how the shape of the histogram changes as you continue to press the sample button.*
+
+A. The shape of the histogram really quickly changes to follow the skew of our distribution. 
+
+### Q9.
+
+*Describe how the shape of the histogram changes as you continue to press the sample button.*
+
+A. It almost immediately starts to form a normal distribution.
+
+### Q10.
+
+*Why is there such a drastic change in the shape of the sampling distribution when you change the sample size from 1 to 2?*
+
+A. Because we increased the sample size. As we increase the sample size, the distribution of our sample will start to follow a normal distribution curve. 
+
+### Q11.
+
+*What are the two main factors that determine the width of the sampling distribution of the mean?*
+
+A. The two main factors that determine the width of the sampling distribution of the mean are sample size and the sample standard deviation. 
+
+### Q12. 
+
+*How many 3-character words are possible?*
+
+A. Because we are adding another character with 25 possbilitiues, 15625 3-character words are possible. 
+```{r}
+25 * 25 * 25 
+```
+
+### Q13.
+
+*How many books would the Library contain if you added one additional position to the book size (i.e. one extra letter on the last page)? Express your answer in terms of B.*
+
+A. Since we are adding just one more character with 25 possibilities to the book, there would be 25B books. 

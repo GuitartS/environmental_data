@@ -1,0 +1,128 @@
+---
+title: "Analysis of Environmental Data"
+subtitle": "Lab Exercise #3"
+author: "Sarah Guitart"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly 
+---
+
+
+Students I worked with: 
+No additional students, but I did attend office hours 
+
+```{r}
+## Install packages, create dat_all, and make sure it works 
+install.packages("here")
+install.packages("psych")
+require(psych)
+require(here)
+dat_bird = read.csv(here("data", "bird.sta.csv"))
+head(dat_bird, 2)
+dat_hab = read.csv(here("data", "hab.sta.csv"))
+head(dat_hab, 2)
+str(dat_bird)
+str(dat_hab)
+dat_all <- merge(dat_hab, dat_bird)
+dat_all
+plot(ba.tot ~ elev, data = dat_all)
+```
+### Q1: What is basal area, and how is it measured?  
+
+Basal area is the cross-sectional area of all trees at 4.5 feet off the ground within a specified unit of land. It is measured by measuring the diameter of the tree at 4.5 feet from the ground. Typically, it is expressed in square feet per acre, but our dataset defines it as meters squared per hectare.  
+
+### Q2: Include a figure of your terrain/basal area pairplot.
+
+```{r}
+## pair plots of terrain and basal area 
+pairs.panels(dat_all[c("slope", "aspect", "elev", "ba.tot")])
+```
+### Q3: Include a figure of your logistic function plot for your first bird species. 
+
+Your figure must include the name of the bird species, appropriate title, axes, etc.
+
+```{r}
+## Create the function first using script from lab 
+get_logistic_param_a = function(slope, midpoint)
+{
+  b = slope / 4
+  return (-midpoint * (slope / 4))
+}
+get_logistic_param_b = function(slope)
+{
+  return (slope / 4)
+}
+logistic = function(x, a, b)
+{
+  val = exp(a + b * x)
+  return(val / (1 + val))
+}
+logistic_midpoint_slope = function(x, midpoint, slope)
+{
+  b = get_logistic_param_b(slope)
+  a = get_logistic_param_a(slope, midpoint)
+  return(logistic(x, a, b))
+}
+```
+
+```{r}
+## First bird, Golden-crowned kinglet 
+my_vec2 <- dat_all$GCKI > 0 
+head(my_vec2)
+gcki_present_absent <- as.numeric(my_vec2 > 0)
+plot(x = dat_all$elev, y = gcki_present_absent, 
+     main = "Golden-Crowned Kinglet Presence/Absence Based On Elevation", 
+     xlab = "Elevation (m)", ylab = "GCKI Presence or Absence", 
+     pch = 16, col = adjustcolor("black", alpha.f = 0.1))
+curve(logistic_midpoint_slope(x, midpoint = 400, slope = 0.1), add = TRUE)
+```
+
+### Q4: Qualitatively describe the bird’s presence/absence patterns in terms of basal area (or your other chosen predictor).
+
+It appears that golden-crowned kinglet presence is skewed slightly towards higher elevation. The opacity of our absent points starts to noticeably decrease at around 500 meters, while our present points remain more opaque until about 650 meters. However, both presence and absence densities happen at right around the same elevation, so it seems like you're just as likely to either detect or not detect them at 300-400 m. Overall, it doesn't seem like a logical model is a good fit.    
+
+
+### Q5: Include a figure of your logistic function plot for your second bird species. 
+
+Your figure must include the name of the bird species, appropriate title, axes, etc.
+
+```{r}
+## Second bird, American robin 
+my_vec3 <- dat_all$AMRO > 0 
+head(my_vec3)
+amro_present_absent <- as.numeric(my_vec3 > 0)
+plot(x = dat_all$elev, y = amro_present_absent, 
+     main = "American Robin Presence/Absence Based On Elevation", 
+     xlab = "Elevation (m)", ylab = "AMRO Presence or Absence", 
+     pch = 16, col = adjustcolor("black", alpha.f = 0.1))
+curve(logistic_midpoint_slope(x, midpoint = 400, slope = -0.005), add = TRUE)
+```
+
+### Q6: Qualitatively describe the bird’s presence/absence patterns in terms of basal area (or your other chosen predictor).
+
+
+From our graph, it appears that the likelihood of detecting an American robin is highest at around 300-450 meters in elevation and that American robin presence is skewed towards the lower elevation sites in our study. While a (weak) pattern for this species was more visible than the first species, logical models still don't seem like a good fit. 
+
+
+### Q7: How many total number of Gray Jays were observed in all of the sampling sites.
+
+A total of 181 gray jays were observed throughout the sampling sites. 
+
+### Q8: Show the R code you used to perform the calculation.
+```{r}
+sum(dat_all$GRJA)
+```
+
+### Q9: Calculate the total number of sampling sites in which Gray Jays were observed.
+
+Gray jays were observed in 110 of the sampling sites.
+
+### Q10: Include the R code you used to perform the presence/absence calculation.
+```{r}
+grayjays <- dat_all$GRJA > 0 
+head(grayjays)
+sum(grayjays)
+```
+```

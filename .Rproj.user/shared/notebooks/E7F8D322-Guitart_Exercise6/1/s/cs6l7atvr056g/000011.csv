@@ -1,0 +1,2 @@
+"0","hist(mean_differences_2, main = ""Simulation of Mean Differences"", "
+"0","     xlab = ""Differences of Means"")"

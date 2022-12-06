@@ -1,0 +1,8 @@
+"0","```r
+# Run the following code
+n = 12345
+vec_1 = sample(12, n, replace = TRUE)
+head(vec_1)
+```"
+"1","[1] 1 7 6 6 9 5
+"

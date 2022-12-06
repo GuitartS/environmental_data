@@ -1,0 +1,223 @@
+---
+title: "Analysis of Environmental Data"
+subtitle": "Lab Exercise #5"
+author: "Sarah Guitart"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly 
+---
+
+Students I worked with: Johanna Ravenhurst, Ian Eggleston 
+
+### Q1
+
+*Show the R code you used to create exp_fun()*
+```{r exp_fun}
+exp_fun = function(x, a, b)
+{
+  return(a * exp(-b * x))
+}
+```
+
+### Q2
+
+*In your lab report, include a single figure containing four negative exponential curves with the following parameter values and line colors/textures:*
+
+*curve 1: a = 1.9, b = 0.1, line color = black, line texture = solid*
+
+*curve 2: a = 1.9, b = 0.3, line color = black, line texture = dotted*
+
+*curve 3: a = 1.2, b = 0.2, line color = red, line texture = solid*
+
+*curve 4: a = 1.2, b = 0.4, line color = red, line texture = dotted*
+```{r exp_fun_plots}
+{
+curve(exp_fun(x, 1.9, 0.1), add = FALSE, from = 0, to = 20, main = "Exponential Functions", xlab = "x", ylab = "f(x)", ylim = c(-0.05, 2.25), col = "black")
+curve(exp_fun(x, 1.9, 0.3), add = TRUE, col = "black", lty = 2)
+curve(exp_fun(x, 1.2, 0.3), add = TRUE, col = "red")
+curve(exp_fun(x, 1.2, 0.4), add = TRUE, col = "red", lty = 2)
+}
+```
+
+### Q3
+
+*Observe how the curves vary as you change the two parameters’ values. Qualitatively describe what happens to the curve as you vary parameter a*
+
+The a parameter is the starting point of the curve, so when it changes the initial y value also changes. If it decreases, the curve starts lower on the y-axis, and if it increases, it starts with a higher y value.  
+
+### Q4
+
+*Observe how the curves vary as you change the two parameters’ values. Qualitatively describe what happens to the curve as you vary parameter b*
+
+The b parameter dictates the slope of the curve, so increasing b increases the overall steepness and depth of the curve. 
+
+### Q5
+
+*In your lab report, include a single plot containing 6 Ricker curves with these parameter values:*
+
+*curve 1: a = 25, b = 0.2, line color = black, line texture = solid*
+
+*curve 2: a = 20, b = 0.2, line color = black, line texture = dotted*
+
+*curve 3: a = 10, b = 0.2, line color = black, line texture = dotted*
+
+*curve 4: a = 75, b = 0.3, line color = red, line texture = solid*
+
+*curve 5: a = 50, b = 0.3, line color = red, line texture = dotted*
+
+*curve 6: a = 40, b = 0.3, line color = red, line texture = dotted*
+```{r ricker}
+ricker_fun = function(x, a, b) 
+{
+  return(a * x * exp(-b * x))
+}
+{
+curve(ricker_fun(x, 25, .2), from = 0, to = 30, ylim = c(0, 90), add = FALSE, 
+  main = "Ricker Function", ylab = "f(x)", xlab = "x")
+curve(ricker_fun(x, 20, .2), add = TRUE, col = "black", lty = 2)
+curve(ricker_fun(x, 10, .2), add = TRUE, col = "black", lty = 4)
+curve(ricker_fun(x, 75, .3), add = TRUE, col = "red")
+curve(ricker_fun(x, 50, .3), add = TRUE, col = "red", lty = 2)
+curve(ricker_fun(x, 40, .3), add = TRUE, col = "red", lty = 4)
+}
+```
+
+### Q6
+
+*Observe how the curves vary as you change the two parameters’ values. Qualitatively describe what happens to the curve as you vary parameter a*
+
+When the parameter a varies, the initial slope of the curve varies accordingly. So if a increases, the slope increases and the peak becomes steeper.  
+
+### Q7
+
+*Observe how the curves vary as you change the two parameters’ values. Qualitatively describe what happens to the curve as you vary parameter b*
+
+When the parameter b varies, the peak of the curve moves along the x-axis. When b increases, the peak of the curve moves to the left. When b decreases, the peak of the curve moves to the right. 
+
+### Q8
+
+*Linear Model. Provide the values of the slope, x1, and y1 parameters you chose. Briefly describe how you chose the values.*
+```{r salamander data}
+{
+library("here")
+dat_dispersal <- read.csv(here("data", "dispersal.csv"))
+head(dat_dispersal, 3)
+str(dat_dispersal)
+line_point_slope = function(x, x1, y1, slope)
+  {
+    get_y_intercept = 
+      function(x1, y1, slope) 
+        return(-(x1 * slope) + y1)
+    linear = 
+      function(x, yint, slope) 
+        return(yint + x * slope)
+    return(linear(x, get_y_intercept(x1, y1, slope), slope))
+  } 
+plot(dat_dispersal$dist.class, dat_dispersal$disp.rate.ftb)
+curve(line_point_slope(x, 800, 0.2, -0.5), add = T)
+curve(line_point_slope(x, 800, 0.2, -0.005), add = T, col = "blue")
+curve(line_point_slope(x, 800, 0.2, -0.0005), add = T, col = "green")
+curve(line_point_slope(x, 800, 0.2, -0.0003), add = T, col = "purple")
+}
+```
+I chose these values because the shape of the points reminded me of the exponentially distributed error exercise in the walkthrough. In this case, the noise decreases as the x values increase. So I chose a negative slope, and x and y values of a point on the plot that seemed to lie on the general "line" of the megaphone shape. I found that x and y values by looking through the dat_dispersal dataframe (x1 of 800, y1 of 0.2) and the slope by plotting increasingly smaller negative slopes, starting at -0.5 and ending at a slope of -0.0003.  
+
+### Q9
+
+*In your lab report, include a scatterplot of the salamander data with your fitted linear model.*
+```{r linear}
+{
+plot(dat_dispersal$dist.class, dat_dispersal$disp.rate.ftb,
+    xlim = c(0, 1500), xlab = "Distance Class", ylab = "Standardized Dispersal Rate", 
+    main = "Marbled Salamander First Time Breeders Linear Model")
+curve(line_point_slope(x, 800, 0.2, -0.0003), add = T)
+}
+```
+### Q10
+
+*Exponential Model. Provide the values of the a and b. Briefly describe how you chose the values.*
+```{r exponential}
+{
+plot(dat_dispersal$dist.class, dat_dispersal$disp.rate.ftb,
+    xlim = c(0, 1500), xlab = "Distance Class", ylab = "Standardized Dispersal Rate", 
+    main = "Marbled Salamander First Time Breeders - Draft")
+curve(exp_fun(x, 1, 1), add = T)
+curve(exp_fun(x, 0.6, -1), add = T, lty = 2, col = "green")
+curve(exp_fun(x, 0.6, 100), add = T, col = "blue")
+curve(exp_fun(x, 0.6, 0.006), add = T, lty= 4)
+curve(exp_fun(x, 0.6, 0.06), add = T, lty= 4, col = "purple")
+curve(exp_fun(x, 0.95, 0.003), add = T, lty= 2, col = "pink")
+}
+```
+I chose these values mostly through a wild process of trial and error, immediatley forgetting everything I had just learned in the previous questions. I tried using a negative value, a low whole number, and a large whole number. I realized that the a parameter is the start of the height of the curve, so I set it at 0.6 and picked 0.006 for a slope out of frustration. From here, I decided on an a value of 0.95 because I figured the curve will start higher than the highest y-value and decided on a b value of 0.003 because it ran roughly through the aforementioned megaphone. 
+
+### Q11
+
+*In your lab report, include a scatterplot of the salamander data with your fitted exponential model.*
+```{r exp_plot}
+{
+plot(dat_dispersal$dist.class, dat_dispersal$disp.rate.ftb,
+    xlim = c(0, 1500), xlab = "Distance Class", ylab = "Standardized Dispersal Rate", 
+    main = "Marbled Salamander First Time Breeders - Exponential Model")
+curve(exp_fun(x, 0.95, 0.003), add = T)
+}
+```
+
+### Q12
+
+*Ricker Model Provide the values of the a and b. Briefly describe how you chose the values.*
+```{r ricker_tests}
+{
+plot(dat_dispersal$dist.class, dat_dispersal$disp.rate.ftb,
+    xlim = c(0, 1500), xlab = "Distance Class", ylab = "Standardized Dispersal Rate", 
+    main = "Ricker Tests")
+curve(ricker_fun(x, 10, 500), add = TRUE, col = "black", lty = 2)
+curve(ricker_fun(x, 20, 10), add = TRUE)
+curve(ricker_fun(x, 1, 10), add = TRUE, col = "red")
+curve(ricker_fun(x, 1, .2), add = TRUE, col = "red", lty = 2)
+curve(ricker_fun(x, .6/300, 1/500), add = TRUE, col = "blue", lty = 4)
+}
+```
+Since this plot is radically different than our previous Ricker model plot, I did a lot of trial and error until I finally made a tiny curve. Then, I talked to Johanna and she broke down her process of understanding how the Ricker curve is built. With that, I landed on 0.6/300 for a, which is roughly what I wanted the initial slope to be, and 1/500 for b, which is somewhere around where I wanted the peak of the curve to be.    
+
+### Q13
+
+*In your lab report, include a scatterplot of the salamander data with your fitted ricker model.*
+```{r ricker_model}
+{
+plot(dat_dispersal$dist.class, dat_dispersal$disp.rate.ftb,
+    xlim = c(0, 1500), xlab = "Distance Class", ylab = "Standardized Dispersal Rate", 
+    main = "Marbled Salamander First Time Breeders - Ricker Model")
+curve(ricker_fun(x, .6/300, 1/500), add = TRUE)
+}
+```
+
+### Q14
+
+*Show the R code you used to create your data frame of model residuals.*
+```{r resids}
+{
+resids_linear <- (line_point_slope(dat_dispersal$dist.class, 800, 0.2, -0.0003) - dat_dispersal$disp.rate.ftb)
+resids_exp <- (exp_fun(dat_dispersal$dist.class, 0.95, 0.003) - dat_dispersal$disp.rate.ftb)
+resids_ricker <- (ricker_fun(dat_dispersal$dist.class, .6/300, 1/500) - dat_dispersal$disp.rate.ftb)
+resids <- data.frame(resids_linear, resids_exp, resids_ricker)
+head(resids, 3)  
+}
+```
+
+### Q15
+
+*In your lab report, include histograms of the residuals for each of your three models. You may create a single figure with three panels, or include three separate figures.*
+```{r resids_hist, fig.width = 4, fig.height = 6}
+{
+par(mfrow = c(3, 1))
+hist(resids$resids_linear, main = "Histogram of Linear Model Residuals", 
+     xlab = "Residual Values", col = "steelblue")
+hist(resids$resids_exp, main = "Histogram of Exponential Model Residuals", 
+     xlab = "Residual Values", col = "darkgoldenrod1")
+hist(resids$resids_ricker, main = "Histogram of Ricker Model Residuals", 
+     xlab = "Residual Values", col = "darkseagreen1")
+}
+```

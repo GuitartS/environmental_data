@@ -1,0 +1,3 @@
+"0","tree_cor <- cor.test(dat_fl$DBH_in, dat_fl$HeighttoTop_ft, "
+"0","                     use='complete.obs', method='spearman')"
+"2","Warning: Cannot compute exact p-value with ties"

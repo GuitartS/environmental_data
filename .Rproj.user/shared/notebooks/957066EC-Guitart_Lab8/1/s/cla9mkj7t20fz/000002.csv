@@ -1,0 +1,8 @@
+"0","```r
+{
+pen_sd <- round(sd(pen_boot$t), digits = 2)
+pen_sd
+}
+```"
+"1","[1] 1.01
+"

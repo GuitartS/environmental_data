@@ -1,0 +1,180 @@
+---
+title: "DataCamp: Intro to R Assignment"
+author: Sarah Guitart
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly
+---
+
+
+```{r}
+# Create the following code and use it to answer Qs 1-6
+# A variable a that contains the text of your first name.
+# A variable b1 that contains the number 45.6
+# A variable b2 that contains the text “45.6”
+# A variable c1 that contains the sequence of integers from 0 to 3
+a <- "Sarah Guitart"
+b1 <- 45.6
+b2 <- "45.6"
+c1 <- c(0:3)
+```
+
+
+## Q1: What type of data is contained in the variable a?
+
+#### Variable a is a character string 
+```{r}
+a
+class(a)
+```
+
+
+## Q2: What type of data is contained in the variable b1?
+
+#### Variable b1 is numeric
+```{r}
+b1
+class(b1)
+```
+
+
+## Q3: What type of data is contained in the variable b2?
+
+#### Variable b2 is a character string
+```{r}
+b2
+class(b2)
+```
+
+
+## Q4: Explain what happens when you try to add b1 and b2 and why.
+
+#### When I try to add b1 and b2 together, it results in an error because we are trying to add text to a number.
+```{r}
+x = b1 + b2
+```
+
+
+## Q5: Are the variables b1 and c1 the same type? Why or why not?
+
+#### The variables are not the same because numeric data objects in R can contain decimals, while integers are strictly positive or negative whole numbers.
+```{r}
+b1
+c1
+class(b1)
+class(c1)
+```
+
+
+## Q6: Explain what happens when you add b1 and c1. Consider both the number of elements in each variable and the data types.
+
+#### When I add the two variables, it adds b1 to all elements within the vector. This makes them numeric, as they are no longer whole numbers. The new object is a vector of 4 numeric variables. 
+```{r}
+bc <- b1 + c1
+bc
+class(bc)
+```
+
+```{r}
+# Create a vector called v1 that contains a sequence of integers from -2 to 2.
+# When you print the contents of v1, it should look like this:
+#> [1] -2 -1  0  1  2
+#Now, use v1 to create a new vector called v2 whose elements are the elements of v1 multiplied by 3. It should look like this:
+#> [1] -6 -3  0  3  6
+# Finally, calculate the sum of all the elements in v2.
+
+```
+
+
+## Q7: Show the R code you used to create v1.
+```{r}
+v1 <- c(-2:2)
+v1
+```
+
+
+## Q8: Show the R code you used to create v2.
+```{r}
+v2 <- v1 * 3
+v2
+```
+
+
+## Q9: Show the R code you used to calculate the sum of elements in v2.
+```{r}
+sum(v2)
+```
+
+```{r}
+# Create a vector called vec_4 whose elements are the integers from 1 to 12.
+# Create a matrix mat_1 from vec_4 that has three rows and four columns. The values in mat_1 should be sequentially increasing by row.
+# For example, the first row of mat_1 should contain the values 1, 2, 3, 4.
+# Create a matrix mat_2 from vec_4 that has three rows and four columns. The values in mat_2 should be sequentially increasing by column.
+#For example, the first column of mat_1 should contain the values 1, 2, 3.
+vec_4 <- c(1:12)
+vec_4
+```
+
+## Q10: Show the code you used to create mat_1.
+```{r}
+mat_1 <- matrix(data = vec_4, nrow = 3, ncol = 4, byrow = TRUE)
+mat_1
+```
+
+## Q11: Show the code you used to create mat_2.
+```{r}
+mat_2 <- matrix(data = vec_4, nrow = 3, ncol = 4)
+mat_2
+```
+
+
+```{r}
+# Create a list, named my_list_1 with following three elements:
+# first element is numeric: 5.2
+# second element is a string: “five point two”
+# third element is a vector of all integers from 0 to 5 [how do you do this?]
+#Name the elements in my_list_1:
+#“two”
+#“one”
+#“three”
+```
+
+## Q12: Show the R code you used to create my_list_1.
+```{r}
+my_list_1 <- list("two" = 5.2, "one" = "five point two", "three" = c(0:5))
+my_list_1
+```
+
+
+## Q13: Show valid R code that selects the third element of the list.
+```{r}
+my_list_1[[3]]
+```
+
+
+## Q14: Show the R code that selects the list element with the name “one”.
+```{r}
+my_list_1$one
+```
+
+
+```{r}
+my_vec = rep(1:3, 5)
+my_bool_vec <- my_vec == 3
+data.frame(my_vec, my_bool_vec)
+```
+
+
+## Q15: Show the R code that you used to create my_bool_vec.
+```{r}
+my_bool_vec <- my_vec == 3
+my_bool_vec
+```
+
+
+## Q16: Show the R code that you used to subset my_vec using my_bool_vec.
+```{r}
+my_vec[(my_bool_vec)]
+```

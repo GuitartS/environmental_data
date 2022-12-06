@@ -1,0 +1,2 @@
+"0","## pair plots of terrain and basal area "
+"0","pairs.panels(dat_all[c(""slope"", ""aspect"", ""elev"", ""ba.tot"")])"

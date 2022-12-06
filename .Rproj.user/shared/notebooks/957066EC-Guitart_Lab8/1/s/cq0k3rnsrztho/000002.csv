@@ -1,0 +1,18 @@
+"0","```r
+dat_1 = subset(dat_all, select = c(b.sidi, s.sidi))
+m = 10000 
+result_mc = numeric(m) 
+for(i in 1:m)
+{
+  index_1 = sample(nrow(dat_1), replace = TRUE)
+  index_2 = sample(nrow(dat_1), replace = TRUE)
+  
+  dat_resampled_i = 
+    data.frame(
+      b.sidi = dat_1$b.sidi[index_1],
+      s.sidi = dat_1$s.sidi[index_2])
+    
+  fit_resampled_i = lm(b.sidi ~ s.sidi, data = dat_resampled_i)
+  result_mc[i] = coef(fit_resampled_i)[2]
+} 
+```"

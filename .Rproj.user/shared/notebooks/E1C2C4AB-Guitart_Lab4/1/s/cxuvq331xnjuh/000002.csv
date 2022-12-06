@@ -1,0 +1,41 @@
+"0","```r
+n_pts2 = 50
+x_min2 = 0
+x_max2 = 100
+set.seed(3)
+x_random2 = runif(n = n_pts2, min = x_min2, max = x_max2)
+y_random2 = rnorm(n = n_pts2)
+dat_random2 = data.frame(x = x_random2, y = y_random2)
+
+n_pts3 = 30
+x_min3 = 5
+x_max3 = 20
+set.seed(5)
+x_random3 = runif(n = n_pts3, min = x_min3, max = x_max3)
+y_random3 = rnorm(n = n_pts3)
+dat_random3 = data.frame(x = x_random3, y = y_random3)
+
+n_pts4 = 50
+x_min4 = 1
+x_max4 = 10
+set.seed(55)
+x_random4 = runif(n = n_pts4, min = x_min4, max = x_max4)
+y_random4 = rnorm(n = n_pts4)
+dat_random4 = data.frame(x = x_random4, y = y_random4)
+
+png(filename = here(\"Guitart_RandomFigures.png\"), 
+    width = 1600, height = 1600)
+par(mfrow = c(2, 2))
+hist(dat_random$x, main = \"Histogram of dat_random\", xlab = \"x\", col = \"greenyellow\")
+plot(y ~ x, data = dat_random2, main = \"Scatterplot of dat_random2\", pch = 18, cex = 2, col = \"lightpink3\")
+```"
+"0","```r
+boxplot(dat_random3, main = \"Boxplot of dat_random3\", col = \"steelblue\")
+hist(dat_random4$y, main = \"Histogram of dat_random4\", xlab = \"y\", col = \"magenta1\")
+```"
+"0","```r
+dev.off()
+```"
+"1","null device 
+          1 
+"

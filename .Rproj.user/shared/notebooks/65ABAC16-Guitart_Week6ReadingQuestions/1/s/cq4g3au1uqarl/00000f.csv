@@ -1,0 +1,21 @@
+"0","library(data.table)"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
+"2","data.table 1.14.2 using 1 threads (see ?getDTthreads).  Latest news: r-datatable.com
+"
+"2","**********
+This installation of data.table has not detected OpenMP support. It should still work but in single-threaded mode.
+This is a Mac. Please read https://mac.r-project.org/openmp/. Please engage with Apple and ask them for support. Check r-datatable.com for updates, and our Mac instructions here: https://github.com/Rdatatable/data.table/wiki/Installation. After several years of many reports of installation problems on Mac, it's time to gingerly point out that there have been no similar problems on Windows or Linux.
+**********
+"
+"0","species <- c(""Polyscias fulva (pol)"", ""Pseudospondias microcarpa (psd)"")"
+"0","seed_pred <- data.frame(species, c(pol_n_predation, psd_n_predation), "
+"0","                        c(pol_n_no_predation, psd_n_no_predation),"
+"0","                        c(pol_n_total, psd_n_total),"
+"0","                        c(round(pol_predation_rate, digits = 3), "
+"0","                          round(psd_predation_rate, digits =3)))"
+"0","colnames(seed_pred) <- c(""Species"", ""Any Taken"", ""None Taken"", ""N"", ""Predation Rate"")"
+"0","setDT(seed_pred)"
+"0","print(seed_pred)"

@@ -1,0 +1,164 @@
+---
+title: "Analysis of Environmental Data - Using Models 1"
+author: "Sarah Guitart"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly 
+---
+
+Collaborating Students: Rosalyn Bathrick, Adri Grow, Jailene Gonzalez 
+
+
+### Q1
+
+*Create a histogram of the salamander reproduction catastrophic rates. Make sure you include an appropriate title and label for the x-axis.*
+```{r}
+library(here)
+catrate <- read.csv(here("data", "catrate.csv"))
+head(catrate)
+summary(catrate)
+hist(catrate$cat.rate, xlab = "Frequency of Catastrophic Rates", 
+     main = "Histogram of Catastrphic Rate")
+```
+
+### Q2
+
+*Conduct a Shapiro-Wilk test of normality of the salamander catastrophic rates. Report the p-value and show the R-code you used to conduct the test.*
+
+A: The p-value for the Shapiro-Wilk test is `r cat_shapiro$p.value`. 
+```{r}
+cat_shapiro = shapiro.test(catrate$cat.rate)
+cat_shapiro
+```
+
+### Q3
+
+*What is the null hypothesis for the Shapiro test?*
+
+A: The null hypothesis for the Shapiro test is that the catastrophic rate data is sampled from a normally distributed population. 
+
+### Q4
+
+*Based on the Shapiro test results, is there strong evidence that the sample came from a non-normally-distributed population?*
+
+A: Based on the p-value from our Shapiro test, there is strong evidence that the sample came from a non-normally distributed population. 
+
+### Q5
+
+*Show the code you used to conduct the t-test.*
+```{r}
+cat_t = t.test(catrate$cat.rate, mu = 2/7)
+```
+
+### Q6
+
+*State the null hypothesis of the test, in plain nontechnical English.*
+
+A: The null hypothesis of our t-test is that the average catastrophic rate is not different from the average late-filling rate. 
+
+### Q7
+
+*Is this a one- or two-tailed test?*
+
+A: This is a two-tailed test because we're looking for any difference, smaller or larger. 
+
+### Q8
+
+*What is the p-value from your t-test? Interpret the p-value as a false-positive rate using nontechnical English that a non-scientist would understand.*
+
+A: The p-value from my t-test is `r cat_t$p.value`. A false-positive would be if our t-test told us that the average catastrophic rate is different from the late-filling rate, when actually the two averages are not different. From our p-value, the rate at which we would be told there is a difference when there isn't would be about 1.2%. 
+
+### Q9
+
+*What is the confidence interval for the difference between the null hypothesis and alternative hypothesis means? Did it include zero?*
+
+A: The confidence interval are `r cat_t$conf.int[1]` and `r cat_t$conf.int[2]`, which does not include zero. This means that 95% of the time, the true catastrophic rate average will be between those two values. 
+
+### Q10
+
+*Considering the results from your t-test, did you conclude that there was strong evidence to reject the null hypothesis?*
+
+A: Considering the results from our test and the associated p-values from our two-sided t-test, I believe we have sufficient evidence to reject the null hypothesis that the two averages are the same. 
+
+### Q11
+
+*Show the code you used to conduct the test.*
+```{r}
+cat_wil = wilcox.test(catrate$cat.rate, mu = 2 / 7)
+```
+
+### Q12
+
+*Compare the p-value with the p-value you got from the t-test.*
+
+A: The p-value for the Shapiro-Wilk test is `r cat_shapiro$p.value` while this p-value is `r cat_wil$p.value`, which is even smaller.  
+
+### Q13
+
+*Considering the results from your rank sum test, did you conclude that there was strong evidence to reject the null hypothesis?*
+
+A: Based on our p-value from the rank sum test, I believe we have sufficient evidence to reject the null hypothesis. 
+
+### Q14
+
+*Compare the overall conclusions you could draw from the results of the two tests.*
+
+A: The overall conclusions I can draw from the results of the t-test and the rank sum test is that it is unlikely that the average catastrophic rate is the same as the average late-filling rate. From the t-test, I could also find the sample average and the 95% confidence interval of our sample data. 
+
+### Q15
+
+*Considering the numerical and graphical data exploration, which test do you think was more appropriate for these data?*
+
+A: Based on our numerical and graphical data exploration, I think the Wilcoxon Rank Sum Test is more appropriate for these data. From the histogram, we can see that we have a small sample set that is not normally distributed, which is perfect for the Wilcoxon test. 
+
+### Q16
+
+*Show the R-code you used to conduct tests of normality for the flipper lengths of Chinstrap and Adelie penguins.*
+```{r}
+require(palmerpenguins)
+penguin_dat = droplevels(subset(penguins, species != "Gentoo"))
+dat_adelie = droplevels(subset(penguin_dat, species == "Adelie"))
+dat_chinstrap = droplevels(subset(penguin_dat, species == "Chinstrap"))
+adelie_shapiro = shapiro.test(dat_adelie$flipper_length_mm)
+chinstrap_shapiro = shapiro.test(dat_chinstrap$flipper_length_mm)
+```
+
+### Q17
+
+*Interpret the test results. Do you conclude that the flipper lengths are normally-distributed for each species? Make sure your answers make reference to the test output.*
+
+A: The p-values for our penguin Shapiro tests were `r adelie_shapiro$p.value` for Adelies and `r chinstrap_shapiro$p.value` for the Chinstraps. From these results, I conclude that the flipper lengths are normally distributed for both species. 
+
+### Q18
+
+*Save your figure to a file and include it in your report. Your figure needs to have appropriate dimensions such that the two histograms are not vertically stretched.*
+
+```{r}
+
+```
+```{r fig.width = 5, fig.height = 2.5}
+png(filename = "penguin_flipper_hists.png",  width = 900, height = 550, 
+    units = "px")
+par(mfrow = c(1, 2))
+hist(dat_adelie$flipper_length_mm, main = "Adelie Flipper Lengths",
+     xlab = "Flipper Lengths (mm)")
+hist(dat_chinstrap$flipper_length_mm, main = "Chinstrap Flipper Lengths",
+     xlab = "Flipper Lengths (mm)")
+dev.off()
+```
+[Histograms of Penguin Flipper Lengths](penguin_flipper_hists.png)
+
+### Q19
+
+*State the alternative hypothesis of the test, in plain nontechnical English.*
+
+A: The alternative hypothesis is that the average Adelie flipper length is different from the average Chinstrap flipper length. 
+
+### Q20
+
+*Include the code you used to conduct the t-test.*
+```{r}
+t.test(flipper_length_mm ~ species, data = penguin_dat)
+```

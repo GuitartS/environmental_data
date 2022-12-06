@@ -1,0 +1,8 @@
+"0","```r
+mean1 <- 10.4
+sd1 <- 2.4 
+norm_17 = rnorm(n = 17, mean = mean1, sd = sd1)
+norm_30 = rnorm(n = 30, mean = mean1, sd = sd1)
+norm_300 = rnorm(n = 300, mean = mean1, sd = sd1)
+norm_3000 = rnorm(n = 3000, mean = mean1, sd = sd1)
+```"

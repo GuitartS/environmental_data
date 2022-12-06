@@ -1,0 +1,7 @@
+"0","```r
+pen_ci <- round(quantile(pen_boot$t, probs = c(0.0275, 0.975)), digits = 2)
+pen_ci
+```"
+"1","2.75% 97.5% 
+-7.77 -3.86 
+"

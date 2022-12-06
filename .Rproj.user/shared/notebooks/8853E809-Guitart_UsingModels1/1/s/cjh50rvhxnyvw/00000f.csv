@@ -1,0 +1,2 @@
+"0","cat_wil = wilcox.test(catrate$cat.rate, mu = 2 / 7)"
+"2","Warning: cannot compute exact p-value with ties"

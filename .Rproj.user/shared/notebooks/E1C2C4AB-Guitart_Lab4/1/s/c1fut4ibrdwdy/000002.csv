@@ -1,0 +1,22 @@
+"0","```r
+library(here)
+png(filename = here(\"lab_04_hist_01.png\"), 
+    width = 1500, height = 1600, res = 180)
+par(mfrow = c(2, 2))
+hist(norm_17, main = \"17 Randomly Generated Points\",
+     xlab = \"Point Values\")
+hist(norm_30, main = \"30 Randomly Generated Points\",
+     xlab = \"Point Values\")
+```"
+"0","```r
+hist(norm_300, main = \"300 Randomly Generated Points\",
+     xlab = \"Point Values\")
+hist(norm_3000, main = \"3000 Randomly Generated Points\",
+     xlab = \"Point Values\")
+```"
+"0","```r
+dev.off()
+```"
+"1","null device 
+          1 
+"

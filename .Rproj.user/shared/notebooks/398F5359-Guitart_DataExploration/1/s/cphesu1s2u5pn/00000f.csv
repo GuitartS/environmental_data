@@ -1,0 +1,4 @@
+"0","# Create histograms of the three terrain variables in one plot"
+"0","par(mfrow = c(3, 1))"
+"0","hist(dat_habitat$elev, main = ""Histogram of Sampling Site Elevation"","
+"0","     xlab = ""Elevation"")"

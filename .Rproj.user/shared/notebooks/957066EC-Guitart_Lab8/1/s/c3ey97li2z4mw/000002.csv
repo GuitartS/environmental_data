@@ -1,0 +1,4 @@
+"0","```r
+hist(pen_boot$t, main = \"Bootstrapped Penguin Flipper Length Means\", xlab = \"Differences in Means Between Chinstrap and Adelie (mm)\",
+     ylab = \"Frequency\")
+```"

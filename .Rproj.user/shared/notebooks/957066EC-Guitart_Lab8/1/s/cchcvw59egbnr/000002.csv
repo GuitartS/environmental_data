@@ -1,0 +1,7 @@
+"0","```r
+{
+s_sidi_mean = mean(dat_all$s.sidi, na.rm = TRUE)
+s_sidi_sd   = sd(dat_all$s.sidi, na.rm = TRUE)
+dat_all$s.sidi.standardized = (dat_all$s.sidi - s_sidi_mean)/s_sidi_sd
+}
+```"

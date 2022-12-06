@@ -1,0 +1,21 @@
+"0","```r
+print(
+    for (i in 1:10)   
+    {
+      print(paste(\"This is loop iteration:\", i)
+        )
+    }
+  )
+```"
+"1","[1] \"This is loop iteration: 1\"
+[1] \"This is loop iteration: 2\"
+[1] \"This is loop iteration: 3\"
+[1] \"This is loop iteration: 4\"
+[1] \"This is loop iteration: 5\"
+[1] \"This is loop iteration: 6\"
+[1] \"This is loop iteration: 7\"
+[1] \"This is loop iteration: 8\"
+[1] \"This is loop iteration: 9\"
+[1] \"This is loop iteration: 10\"
+NULL
+"

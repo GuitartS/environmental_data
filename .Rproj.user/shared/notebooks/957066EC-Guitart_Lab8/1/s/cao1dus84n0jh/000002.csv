@@ -1,0 +1,17 @@
+"0","```r
+result_boot = numeric(m) 
+for(i in 1:m)
+{
+  index_boot_1 = sample(nrow(dat_1), replace = TRUE)
+  
+  boot_resampled_i = 
+    data.frame(
+      b.sidi = dat_1$b.sidi[index_boot_1],
+      s.sidi = dat_1$s.sidi[index_boot_1])
+  
+  fit_boot_i = lm(b.sidi ~ s.sidi, data = boot_resampled_i)
+  result_boot[i] = coef(fit_boot_i)[2]
+} 
+hist(result_boot)
+abline(v = slope_observed, lty = 2, col = \"red\", lwd = 2)
+```"

@@ -1,0 +1,40 @@
+"0","```r
+{
+# Creating pen_boot
+library(palmerpenguins)
+dat_pen <- droplevels(subset(penguins, species != \"Gentoo\"))
+install.packages(\"simpleboot\")
+library(simpleboot)
+x <- (droplevels(subset(dat_pen, species == \"Adelie\")))
+y <- (droplevels(subset(dat_pen, species == \"Chinstrap\")))
+pen_boot <- two.boot(x$flipper_length_mm, y$flipper_length_mm, FUN = mean, R = 10000, na.rm = TRUE)
+str(pen_boot)
+}
+```"
+"1","trying URL 'https://cran.rstudio.com/bin/macosx/contrib/4.2/simpleboot_1.1-7.tgz'
+Content type 'application/x-gzip' length 66413 bytes (64 KB)
+==================================================
+downloaded 64 KB
+"
+"1","
+The downloaded binary packages are in
+	/var/folders/3z/r670qdhx521cfkgfmyzcp2xr0000gn/T//RtmpsPzXds/downloaded_packages
+"
+"1","Simple Bootstrap Routines (1.1-7)
+"
+"1","List of 12
+ $ t0       : num -5.87
+ $ t        : num [1:10000, 1] -5.33 -5.58 -5.6 -5.94 -6.29 ...
+ $ R        : num 10000
+ $ data     : int [1:220] 181 186 195 NA 193 190 181 195 193 190 ...
+ $ seed     : int [1:626] 10403 10 -1073785899 1117381999 -2128207754 729303968 1316121699 -642950911 -598584208 -513093618 ...
+ $ statistic:function (x, idx)  
+ $ sim      : chr \"ordinary\"
+ $ call     : language boot(data = c(sample1, sample2), statistic = boot.func, R = R, strata = ind,      weights = weights)
+ $ stype    : chr \"i\"
+ $ strata   : num [1:220] 1 1 1 1 1 1 1 1 1 1 ...
+ $ weights  : num [1:220] 0.00658 0.00658 0.00658 0.00658 0.00658 ...
+ $ student  : logi FALSE
+ - attr(*, \"class\")= chr \"simpleboot\"
+ - attr(*, \"boot_type\")= chr \"boot\"
+"

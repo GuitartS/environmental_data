@@ -1,0 +1,29 @@
+"0","```r
+treatment <- subset(dat_tree, treatment == \"clipped\")
+control <- subset(dat_tree, treatment == \"control\")
+tree_boot <- two.boot(treatment$pine, control$pine, FUN = mean, R = 10000)
+str(tree_boot)
+```"
+"1","List of 12
+ $ t0       : num 16
+ $ t        : num [1:10000, 1] 16.5 15 11.88 8.12 13.25 ...
+ $ R        : num 10000
+ $ data     : int [1:16] 11 0 16 3 49 17 0 47 4 0 ...
+ $ seed     : int [1:626] 10403 512 -5559197 -886910511 1895895298 -1347201464 -1175662677 1261105132 1960172369 -1018174654 ...
+ $ statistic:function (x, idx)  
+ $ sim      : chr \"ordinary\"
+ $ call     : language boot(data = c(sample1, sample2), statistic = boot.func, R = R, strata = ind,      weights = weights)
+ $ stype    : chr \"i\"
+ $ strata   : num [1:16] 1 1 1 1 1 1 1 1 2 2 ...
+ $ weights  : num [1:16] 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 ...
+ $ student  : logi FALSE
+ - attr(*, \"class\")= chr \"simpleboot\"
+ - attr(*, \"boot_type\")= chr \"boot\"
+"
+"0","```r
+q10 <- round(quantile(tree_boot$t, c(0.0275, 0.975)), digits = 2)
+q10
+```"
+"1","2.75% 97.5% 
+ 4.38 29.75 
+"

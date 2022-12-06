@@ -1,0 +1,2 @@
+"0","overall_resids <- residuals(fit_rope_1)"
+"0","model_shapiro <- shapiro.test(overall_resids)"

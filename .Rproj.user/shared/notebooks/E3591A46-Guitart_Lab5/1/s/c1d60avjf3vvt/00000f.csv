@@ -1,0 +1,6 @@
+"0","{"
+"0","curve(exp_fun(x, 1.9, 0.1), add = FALSE, from = 0, to = 20, main = ""Exponential Functions"", xlab = ""x"", ylab = ""f(x)"", ylim = c(-0.05, 2.25), col = ""black"")"
+"0","curve(exp_fun(x, 1.9, 0.3), add = TRUE, col = ""black"", lty = 2)"
+"0","curve(exp_fun(x, 1.2, 0.3), add = TRUE, col = ""red"")"
+"0","curve(exp_fun(x, 1.2, 0.4), add = TRUE, col = ""red"", lty = 2)"
+"0","}"

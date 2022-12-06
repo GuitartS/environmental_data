@@ -1,0 +1,7 @@
+"0","two_group_resample_diff = function(x, n_1, n_2)"
+"0","{"
+"0"," dat_1 = sample(na.omit(x), n_1, replace = TRUE)"
+"0"," dat_2 = sample(na.omit(x), n_2, replace = TRUE)"
+"0"," diff_sim = mean(dat_1, na.rm = T) - mean(dat_2, na.rm = T)"
+"0","   return(diff_sim)"
+"0","}"

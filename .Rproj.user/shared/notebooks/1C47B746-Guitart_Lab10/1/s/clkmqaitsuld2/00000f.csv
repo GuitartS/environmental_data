@@ -1,0 +1,8 @@
+"0","fit_rope_1$coefficients[6]"
+"1","rope.typeXTC "
+"1","
+"
+"1","  -0.1016429 "
+"1","
+"
+"0","xtc <- base + round(fit_rope_1$coefficients[6], digits = 3)"

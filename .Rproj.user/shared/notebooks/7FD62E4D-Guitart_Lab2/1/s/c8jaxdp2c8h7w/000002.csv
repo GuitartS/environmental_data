@@ -1,0 +1,13 @@
+"0","```r
+create_and_print_vec = function(n, min = 1, max= 10)
+{
+  vec_2 <- sample(x = min:max, size = n, replace = TRUE)
+  print(for (i in 1:n)   
+    {
+      print(paste(\"The element at index\", i, \"is\", vec_2[i])
+        )
+    }
+  )
+}
+create_and_print_vec(5)
+```"

@@ -1,0 +1,16 @@
+### gingko walk through 
+library(here)
+ginkgo <- read.csv(here("data", "ginkgo_data_2022.csv"))
+head(ginkgo, 5)
+sum(is.na(ginkgo))
+sapply(ginkgo, class)
+str(ginkgo)
+table(ginkgo$site_id)
+length(unique(ginkgo$site_id))
+
+seeds <- subset(ginkgo, site_id, seeds.present == TRUE)
+trees_seeds <- data.frame(subset(ginkgo, select = c("site_id","seeds_present"))) 
+trees_with_seeds <- data.frame(unique(trees_seeds$site_id[trees_seeds$seeds_present==TRUE])) 
+seeds <- subset(ginkgo, seeds_present == TRUE)
+length(unique(seeds$site_id))
+boxplot(notch_depth ~ seeds_present, data = ginkgo)       

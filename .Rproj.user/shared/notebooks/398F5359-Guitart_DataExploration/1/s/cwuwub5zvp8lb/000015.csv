@@ -1,0 +1,1 @@
+"0","curve(line_point_slope(x, x1 = 20, y1 = 10, slope = 0.1), add = TRUE)"

@@ -1,0 +1,7 @@
+"0","```r
+par(mfrow = c(2, 1))
+hist(dat_random2$resids, main = \"Histogram of Residuals\", xlab = \"Residual Values\",
+     col = \"mediumorchid\")
+plot(dat_random2$y_predict, dat_random2$y, main = \"Residual Scatterplot\", 
+     xlab = \"Predicted Values\", ylab = \"Observed Values\", pch = 15, cex = 2, col = \"cadetblue\")
+```"

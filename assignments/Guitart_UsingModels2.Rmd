@@ -1,0 +1,75 @@
+---
+title: "Analysis of Environmental Data - Using Models 2"
+author: "Sarah Guitart"
+output:
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly
+---
+
+Collaborating Students: None
+
+### Q1
+
+*Re-create the conditional boxplot of penguin body mass conditioned on sex and species. Include your boxplot as a figure in your report.*
+```{r}
+require(palmerpenguins)
+boxplot(body_mass_g ~ sex * species, data = penguins, 
+                      ylab = "Body Mass (g)", xlab = "", las = 2,
+                    names = c("Adelie \n Female", "Adelie \n Male", 
+                                "Chinstrap \n Female", "Chinstrap \n Male",
+                                "Gentoo \n Female", "Gentoo \n Male"),
+                      main = "Penguin Body Mass by Species and Sex")
+```
+
+### Q2
+
+*Based on the boxplots, do you think male penguins are significantly heavier than female penguins of the same species? Explain your reasoning, and be sure to explain why you think any observed differences are significant or not.*
+
+A: Based on the boxplot conditioned on sex only, I think that male penguins are significantly heavier than female penguins. The shape, dispersion, and the distribution of the median in the middle 50% of values of the two groups look really similar, but females are shifted about 500-600 grams lower. Additionally, when we look at the boxplot conditioned on sex and species, while we might see a little more overlap, the median and the inter-quartile range are all higher (heavier) than the female groups. I believe this makes the males significantly heavier than the females. 
+
+### Q3
+
+*Do you think adding sex to a model that already includes species will improve the model fit?*
+
+A: I think adding a model that already includes species will improve the model fit. This is because exploring the data through the boxplots with this additional parameter showed differences between groups that may assist with our ability to predict and interpret penguin weights. 
+
+### Q4
+
+*Show the R-code you used to build fit_both.*
+```{r}
+fit_both <- lm(body_mass_g ~ sex * species, data = penguins)
+```
+
+### Q5
+
+*What is the base case for the two-way model that includes sex and species?*
+```{r}
+summary(fit_both)
+```
+
+A: The base case for this model are female Adelie penguins. 
+
+### Q6
+
+*What are the names of the two coefficients (from the first column of the coefficient table) that you need to calculate the average mass of female Chinstrap penguins?*
+
+A: The names of the two coefficients that I need to calculate the average mass of female Chinstraps penguins are "Intercept" and "speciesChinstrap." 
+
+### Q7
+
+*What is the predicted average mass of female Chinstrap penguins in the interactive model?*
+
+A: The predicted average mass of female Chinstrap penguins from the interactive model is `r 3368.84 + 158.37` grams. 
+
+### Q8
+
+*What is the observed average mass of female Chinstrap penguins, calculated from the penguins data?*
+
+```{r}
+aggregate(body_mass_g ~ sex * species, data = penguins, FUN = mean)
+```
+A: The average mass of a female Chinstrap penguin from the penguin data is 3527.21 grams. 
+
+

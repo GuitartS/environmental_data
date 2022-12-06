@@ -1,0 +1,17 @@
+"0","```r
+pine_seedlings <- wilcox.test(pine ~ treatment, data = dat_tree, na.rm = TRUE)
+```"
+"1","Warning: cannot compute exact p-value with ties
+"
+"0","```r
+ls(pine_seedlings)
+```"
+"1","[1] \"alternative\" \"data.name\"   \"method\"      \"null.value\"  \"p.value\"    
+[6] \"parameter\"   \"statistic\"  
+"
+"0","```r
+pine_p <- round(pine_seedlings$p.value, digits = 2)
+pine_p
+```"
+"1","[1] 0.1
+"

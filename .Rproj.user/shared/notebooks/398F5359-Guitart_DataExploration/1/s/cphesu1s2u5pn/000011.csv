@@ -1,0 +1,2 @@
+"0","hist(dat_habitat$slope, main = ""Histogram of Sampling Site Slope"","
+"0","     xlab = ""Slope"")"

@@ -1,0 +1,166 @@
+---
+title: "Analysis of Environmental Data - Lab Exercise #11"
+author: "Sarah Guitart"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly 
+---
+
+Collaborating Students: Ian Eggleston, Olivia Dinkelacker, Feipeng Huang 
+
+### Q1
+
+*Create a line plot of dispersion (x-axis) and statistical power (y-axis) with a dotted vertical red line at the observed population standard deviation value.*
+```{r import_create_values}
+library(here)
+bird <- read.csv(here("data", "bird.sub.csv"))
+hab <- read.csv(here("data", "hab.sub.csv"))
+birdhab <- merge(bird, hab)
+dim(birdhab)
+fit_1 <- lm(BRCR ~ ls, data = birdhab)
+fit_1_coefs = coefficients(fit_1)
+fit_1_summary = summary(fit_1)
+sd_obs <- fit_1_summary$sigma
+int_obs <- fit_1_coefs[1]
+slope_obs <- fit_1_coefs[2]
+int_obs
+sd_obs
+slope_obs
+```
+```{r create_functions}
+linear_simulator = function(x, y_int, slope, st_dev)
+{
+  noise = rnorm(length(x), mean = 0, sd = st_dev)
+  return(slope * x + y_int + noise)
+}
+linear_sim_fit = function(x, slope, y_int, st_dev)
+{
+  y_sim = linear_simulator(
+    x = x,
+    y_int = y_int,
+    slope = slope,
+    st_dev = st_dev
+  )
+    fit_sim = lm(y_sim ~ x)
+  return(fit_sim)
+}
+```
+
+*Include a figure of your line plot in your report.*
+```{r}
+alpha = 0.05
+n_sims = 100
+p_vals = numeric(n_sims)
+n_sds = 20
+pop_sds = seq(from = 0.01, to = 1.5, length.out = n_sds)
+pop_sd_powers = numeric(length(n_sds))
+for(j in 1:length(pop_sds))
+{
+  pop_sd_j = pop_sds[j]
+  for(i in 1:n_sims)
+  {
+    fit_sim = linear_sim_fit( x = birdhab$ls,
+                               y_int = int_obs,
+                               slope = slope_obs,
+                               st_dev = pop_sds[j])
+    p_vals[i] = summary(fit_sim)$coefficients[2, 'Pr(>|t|)']
+  }
+  pop_sd_powers[j] = sum(p_vals < alpha) / n_sims
+}
+sim_output_dispersion = data.frame(
+  sd = pop_sds,
+  power = pop_sd_powers)
+plot(power ~ sd, data = sim_output_dispersion, xlab = "Population Standard Deviation", ylab = "Statistical Power", main = "Population Disperson and Statistical Power")
+abline(v = sd_obs, col = "red", lty = 2, lwd = 3)
+```
+### Q2
+
+*Why do you think that statistical power decreases as population dispersion increases?*
+
+A: Statistical power decreases as population dispersion increases because it makes the sampling distribution wider and reduces the overlap between the null and alternative hypothesis distributions. 
+
+### Q3
+
+*Create a contour plot of the sample size and population dispersion power simulation.*
+```{r}
+max_x = max(birdhab$ls)
+sample_sizes = seq(5, 100)
+sim_output_3 = matrix(nrow = length(pop_sds), ncol = length(sample_sizes))
+for(k in 1:length(pop_sds))
+{
+  pop_sd_k = pop_sds[k]
+  for(j in 1:length(sample_sizes))
+  {
+    x_vals = seq(0, max_x, length.out = sample_sizes[j])
+    for(i in 1:n_sims)
+    {
+      fit_sim = linear_sim_fit( x = x_vals,
+                                y_int = int_obs,
+                                slope = slope_obs,
+                                st_dev = pop_sd_k)
+      p_vals[i] = summary(fit_sim)$coefficients[2, 'Pr(>|t|)']
+    }
+    sim_output_3[k, j] = sum(p_vals < alpha) / n_sims
+  }
+  print(paste0("Testing standard deviation ", k, " of ", n_sds))
+}
+image(sim_output_3)
+sim_3_dat = 
+  list(
+    power = sim_output_3,
+    sample_size = sample_sizes,
+    pop_sd = pop_sds)
+```
+
+*Include a figure of your contour plot in your report.*
+```{r}
+contour(
+  x = sim_3_dat$pop_sd,
+  y = sim_3_dat$sample_size,
+  z = sim_3_dat$power,
+  xlab = "Population Dispersion",
+  ylab = "Sample Size",
+  main = "Contour Plot of Statistical Power",
+  levels = seq(0, 1, length.out = 9),
+  drawlabels = TRUE,
+  # method = "simple")
+  method = "edge")
+```
+
+### Q4
+
+*Qualitatively describe the patterns you see in the contour plot. Make sure you discuss the effects of sample size and population dispersion on statistical power.*
+
+A: From our contour plot, we can really quickly see that higher population dispersion makes it really difficult to achieve good statistical power. We can see that increasing the sample size gives us some leeway when it comes to statistical power (for example, if we want 100% statistical power, having a sample size of 20 means our population must have a standard deviation of less than 0.2, but if we have a sample size of 100, we can have a standard deviation of up to 0.4). However, we can see that as our population dispersion increases towards 1.0, even a sample size of 100 won't keep our statistical power above 0.375. 
+
+### Q5
+
+*Create an interactive 3D perspective plot, using persp3d() in package rgl, of the sample size and population dispersion power simulation. You need to save this to an html file using saveWidget() in package htmlwidgets. Check out my example in the lab walkthrough if you need a hint. To save the 3D plot, first you’ll need to run the persp3d() function and the plot will open in a separate window. Next, run saveWidge() while the 3D plot is open to save it to an html file. Your surface must be a different color than my example here.*
+
+*Upload your plot as an interactive html html file. NOTE: some Mac users are not able to use RGL. You may also upload a static plot created with persp() if you can’t get RGL to work on your computer.*
+```{r}
+install.packages("rgl")
+library(rgl)
+persp3d(x = sim_3_dat$pop_sd,
+  y = sim_3_dat$sample_size,
+  z = sim_3_dat$power,
+  xlab = "sd", ylab = "n", zlab = "power",
+  col = 'plum1',
+  theta = 30, phi = 30, expand = .75,
+  ticktype = 'detailed')
+require(htmlwidgets)
+saveWidget(
+  rglwidget(),
+  file = here(
+    "docs", "webGL",
+    "n_popdispersion_power_sim_plot.html"),
+  selfcontained = TRUE)
+```
+
+### Q6
+
+*Describe how you could use the information shown in your plot when designing an experiment.*
+
+A: From this plot, we know that increased population dispersion really quickly decreases our statistical power. We also know that standard deviation tends to decrease with increased sample sizes. So taking this information together, when we design our experiment, we should consider decreasing population dispersion as a big priority, and therefore increase the sample size as much as possible to assist with that element. 

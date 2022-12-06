@@ -1,0 +1,11 @@
+"0","```r
+xs = seq(0, 22, length.out = 1000)
+ys = dnorm(xs, mean = mean1, sd = sd1)
+svg(\"norm_1.svg\", width = 7, height = 7)
+plot(xs, ys, main = \"Normal PDF: mean 10.4, sd 2.4\", type = \"l\", xlim = c(1, 20))
+abline(h = 0)
+dev.off()
+```"
+"1","null device 
+          1 
+"

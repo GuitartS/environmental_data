@@ -1,0 +1,5 @@
+"0","png(filename = ""penguin_flipper_hists.png"",  width = 900, height = 550, "
+"0","    units = ""px"")"
+"0","par(mfrow = c(1, 2))"
+"0","hist(dat_adelie$flipper_length_mm, main = ""Adelie Flipper Lengths"","
+"0","     xlab = ""Flipper Lengths (mm)"")"

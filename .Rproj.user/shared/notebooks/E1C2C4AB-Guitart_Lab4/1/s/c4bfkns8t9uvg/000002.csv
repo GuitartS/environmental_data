@@ -1,0 +1,10 @@
+"0","```r
+n_pts = 30
+x_min = 1
+x_max = 10
+set.seed(50)
+x_random = runif(n = n_pts, min = x_min, max = x_max)
+y_random = rnorm(n = n_pts)
+dat_random = data.frame(x = x_random, y = y_random)
+hist(dat_random$x, main = \"Histogram of dat_random\", xlab = \"x\", col = \"greenyellow\")
+```"

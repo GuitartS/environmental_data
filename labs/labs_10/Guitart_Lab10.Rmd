@@ -1,0 +1,219 @@
+---
+title: "Analysis of Environmental Data - Lab Exercise #10"
+author: "Sarah Guitart"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly 
+---
+
+Collaborating Students: None
+
+### Q1
+
+*Submit the code you used to build your ANOVA by hand. Make sure you use the code template so that you use the same variable names as those which we’ll use for the grading.*
+```{r}
+library(here)
+rope <- read.csv(here("data", "rope.csv"))
+head(rope)
+dim(rope)
+str(rope)
+sum(is.na(rope))
+unique(rope$rope.type)
+rope$rope.type <- as.factor(rope$rope.type)
+str(rope)
+levels(rope$rope.type)
+n_obs <- nrow(rope)
+n_obs
+dim(rope)
+n_groups <- nlevels(rope$rope.type)
+n_groups
+mean_cut <- mean(rope$p.cut)
+mean_cut
+sum_of_squares <- function(n)
+{
+  (sum((n - mean_cut)^2))
+}
+ss_tot <- sum_of_squares(rope$p.cut)
+agg_resids <-aggregate(
+  x = rope$p.cut,
+  by = list(rope$rope.type),
+  FUN = function(x) x-mean(x))
+agg_sum_sq_resids <-aggregate(
+  x = rope$p.cut,
+  by = list(rope$rope.type),
+  FUN = function(x) sum((x-mean(x))^2))
+ss_within <- sum(agg_sum_sq_resids$x)
+ss_among <- ss_tot - ss_within
+df_tot <- n_obs - 1
+df_within <- n_obs - n_groups
+df_among <- n_groups - 1
+ms_among <- ss_among/df_among
+ms_within <- ss_within/df_within
+f_ratio <- ms_among / ms_within
+f_pval <- 1-pf(f_ratio, df1 = df_among, df_within)
+```
+
+Self-test
+```{r}
+# number comparison tolerance
+digits_check = 5
+# Build the reference model using R functions
+fit_1 = lm(p.cut ~ rope.type, data=rope)
+anova(fit_1)
+anova_fit_1 = anova(fit_1)
+# Check degrees of freedom
+anova_fit_1$Df == c(df_among, df_within)
+# Check sums of squares
+round(anova_fit_1$`Sum Sq`, digits = digits_check) == round(c(ss_among, ss_within), digits = digits_check)
+# Check mean squares
+round(anova_fit_1$`Mean Sq`, digits = digits_check) == round(c(ms_among, ms_within), digits = digits_check)
+# Check the F-ratio
+round(anova_fit_1$`F value`[1], digits = digits_check) == round(f_ratio, digits = digits_check)
+# Check the F test statistic p-value
+round(anova_fit_1$`Pr(>F)`[1], digits = digits_check) == round(f_pval, digits = digits_check)
+```
+
+### Q2
+
+*Examine the conditional boxplot in the Partitioning Variance: Within-Group section of the walkthrough. Based on the figure, do you think there are equal variances among the groups?*
+
+A: Based on the boxplot in that section of the walkthrough, I don't think there are equal variances among the rope type groups. 
+
+### Q3
+
+*Conduct a Bartlett test to assess the homogeneity of variances of the percent cut among the rope type groups.*
+```{r}
+rope_bart <- bartlett.test(p.cut ~ rope.type, data = rope)
+rope_bart
+```
+### Q4
+
+*Given your graphical assessment (question 2) and the Bartlett test, do you think an ANOVA-type analysis is appropriate on the raw data? Explain why or why not.*
+
+A: Given my graphical assessment and the Bartlett test, there is likely at least one rope type group whose variance is not equal to the other rope types. This is because some of our groups showed larger spread and our p-value was `r rope_bart$p.value`, meaning that we can reject the null hypothesis that the variances are equal between the groups. 
+
+### Q5
+
+*Which rope type is the base case?*
+
+A: BLAZE is the base case for this ANOVA model. 
+```{r}
+unique(rope$rope.type)
+fit_rope_1 = lm(p.cut ~ rope.type, data = rope)
+summary(fit_rope_1)
+```
+
+### Q6
+
+*What is the mean percent cut of the base case rope? Show your calculation using value(s) from the model coefficient table.*
+
+A: The mean percent cut of the base case rope is `r base`. 
+```{r}
+base <- round(fit_rope_1$coefficients[1] + 0, digits = 3)
+```
+
+### Q7
+
+*What is the mean percent cut rope type XTC? Show your calculation using value(s) from the model coefficient table.*
+
+A: The mean percent cut of the rope type XTC is `r xtc`. 
+```{r}
+fit_rope_1$coefficients[6]
+xtc <- base + round(fit_rope_1$coefficients[6], digits = 3)
+```
+
+### Q8
+
+*Use the residuals() function to retrieve the residuals from your model and perform an overall normality test. Report the p-value.*
+
+A: The p-value of our normality test of the model residuals is `r model_shapiro$p.value`. 
+```{r}
+overall_resids <- residuals(fit_rope_1)
+model_shapiro <- shapiro.test(overall_resids)
+```
+
+### Q9
+
+*Do your model residuals meet the normality assumption, and how do you know?*
+
+A: My model residuals do not meet the normality assumption, because our p-value is less than 0.05. This means we can reject the null hypothesis that our residuals are normally distributed.  
+
+### Q10
+
+*Perform normality tests on the residuals within each group. How many groups meet the normality assumption? Optional challenge: identify which rope types meet the assumption.*
+
+A: Only three groups meet the normality assumption. They are the BS, PI, and SB rope types. 
+```{r}
+blaze_resids <- unlist(agg_resids$x[1])
+bs_resids <- unlist(agg_resids$x[2])
+pi_resids <- unlist(agg_resids$x[3])
+sb_resids <- unlist(agg_resids$x[4])
+vel_resids <- unlist(agg_resids$x[5])
+xtc_resids <- unlist(agg_resids$x[6])
+shapiro.test(blaze_resids)
+shapiro.test(bs_resids)
+shapiro.test(pi_resids)
+shapiro.test(sb_resids)
+shapiro.test(vel_resids)
+shapiro.test(xtc_resids)
+```
+
+### Q11
+
+*Given the results of your tests for residual normality, do you think that a one-way Analysis of Variance is appropriate for this dataset?*
+
+A: Given the tests for residual normality, both of the overall model and the different groups, a one-way Analysis of Variance may not be appropriate for this dataset. The overall model and half of the rope type groups had a p-value less than 0.05, which rejects the null hypothesis that our residuals are normally distributed. 
+
+### Q12
+
+*Create a conditional boxplot of the female penguins: body mass conditioned on species.*
+```{r}
+require(palmerpenguins)
+pen_fem = subset(penguins, sex == "female")
+boxplot(body_mass_g ~ species, data = pen_fem, xlab = "Species", ylab = "Body Mass (g)")
+```
+
+### Q13
+
+*Based on the boxplot, do you anticipate any problems with residual normality, or homogeneity of variances? Why or why not?*
+
+A: Based on the boxplot, I anticipate that I will have problems with homogeneity of variances. This because the width of the boxes and the spread of the data look a little different between species.  
+
+### Q14
+
+*Conduct a Bartlett test for homogeneity of variances of body mass grouped by species. Hint: use the formula notation. Report the p-value. Is the homogeneity assumption met? Why or why not?*
+
+A: The homogeneity assumption has been met because the p-value for our Bartlett test is `r pen_bart$p.value`, which is greater than 0.05 and does not reject the null hypothesis that the variances between groups are the same. 
+```{r}
+pen_bart <- bartlett.test(body_mass_g ~ species, data = pen_fem)
+```
+
+### Q15
+
+*Fit a linear model of body mass (the response) and species (the predictor) using the female penguin data. Conduct a test for normality of the residuals. Report the p-value. Is the residual normality assumption met? Why or why not?*
+
+A: The p-value for our normality test of the linear model residuals is `r pen_shapiro$p.value`. This means that the residual normality assumption is met because it is over 0.05, meaning that we cannot reject the null hypothesis that the residuals are normally distributed.  
+```{r}
+fit_pen <- lm(body_mass_g ~ species, data = pen_fem)
+pen_resids <- residuals(fit_pen)
+pen_shapiro <- shapiro.test(pen_resids)
+```
+
+### Q16
+
+*Conduct a Tukey HSD post-hoc test on your model. Which pair or pairs of species have significantly different body masses?*
+
+A: All pairs of penguin species have significantly different body masses. 
+```{r}
+pen_hsd = TukeyHSD(aov(fit_pen))
+class(pen_hsd)
+round(pen_hsd$species, digits = 4)
+```
+
+### Q17
+
+*Describe how your HSD test results match, or do not match, the graphical insight from the conditional boxplot.*
+
+A: The HSD test results somewhat match the graphical insights from the conditional boxplot. From the boxplot, it looks like Gentoos will be significantly larger than both Adelie and Chinstrap penguins. This is reflected in our HSD test too. However, I could assume from our boxplot that Chinstraps might be typically larger than Adelie penguins, but I couldn't say if they were significantly larger. From our HSD test, we can determine that Chinstrap penguins are larger than Adelie penguins. 

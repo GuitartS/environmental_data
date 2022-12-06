@@ -1,0 +1,263 @@
+---
+title: "Analysis of Environmental Data - Lab Exercise #8"
+author: "Sarah Guitart"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly 
+---
+
+Students I worked with: Ian Eggleston 
+
+### Q1
+
+*Calculate the standard deviation of the differences in mean flipper length from your bootstrap simulation. Show the R-code you used to find do the calculation.*
+
+A: The standard deviation of the differences in mean flipper length is `r pen_sd`. 
+```{r}
+{
+# Creating pen_boot
+library(palmerpenguins)
+dat_pen <- droplevels(subset(penguins, species != "Gentoo"))
+install.packages("simpleboot")
+library(simpleboot)
+x <- (droplevels(subset(dat_pen, species == "Adelie")))
+y <- (droplevels(subset(dat_pen, species == "Chinstrap")))
+pen_boot <- two.boot(x$flipper_length_mm, y$flipper_length_mm, FUN = mean, R = 10000, na.rm = TRUE)
+str(pen_boot)
+}
+``` 
+
+```{r penboot_sd}
+{
+pen_sd <- round(sd(pen_boot$t), digits = 2)
+pen_sd
+}
+```
+
+### Q2
+
+*Include your histogram of bootstrapped differences in your lab report (you don’t need to show the R-code but make sure your plot includes appropriate title, axes, etc.).*
+
+```{r}
+hist(pen_boot$t, main = "Bootstrapped Penguin Flipper Length Means", xlab = "Differences in Means Between Chinstrap and Adelie (mm)",
+     ylab = "Frequency")
+```
+
+### Q3
+
+*What was the 95% bootstrap CI you calculated using quantile()? Show the R-code you used to answer the question.*
+
+A: The 95% confidence interval is `r pen_ci[1]` - `r pen_ci[2]`. 
+```{r}
+pen_ci <- round(quantile(pen_boot$t, probs = c(0.0275, 0.975)), digits = 2)
+pen_ci
+``` 
+
+### Q4
+
+*Do you think the resampled differences in means follow a skewed distribution? Your answer should make reference to the mean, median, and histogram of the differences in means.*
+
+A: The resampled differences do not follow a skewed distribution. The histogram of differences is normally distributed and centered around the mean. The median is reflected in the most frequently seen values in the histogram and the mean and median values themselves are very close. 
+```{r}
+mean(pen_boot$t)
+median(pen_boot$t)
+```
+
+### Q5
+
+*Show the R-code you used to create pen_ecdf()*
+
+```{r}
+pen_ecdf <- ecdf(pen_boot$t)
+``` 
+
+### Q6
+
+*What is the probability, according to the empirical distribution function, of observing a mean difference of -4.5 or greater? Show the R code you used to perform the calculation.*
+
+A: The probability of observing a mean difference of -4.5 or greater is `r q6`. 
+```{r}
+q6 <- round((1 - pen_ecdf(-4.5)), digits = 2)
+q6
+```
+
+### Q7
+
+*What is the probability, according to the empirical distribution function, of observing a mean difference of -8 or smaller? Show the R code you used to perform the calculation.*
+
+A: The probability of observing a mean difference of -8 or smaller is `r q7`. 
+```{r}
+q7 <- round(pen_ecdf(-8), digits = 2)
+q7
+``` 
+
+### Q8
+
+*State the null and alternative hypotheses of a two-sample, two-tailed test for the difference in mean flipper lengths between the two penguin species.*
+
+A: The null hypothesis is that there is no difference in mean flipper lengths between Chinstrap and Adelie penguins. The alternative hypothesis is that there is a difference in mean flipper lengths between Chinstrap and Adelie penguins. 
+
+### Q9
+
+*What was the p-value? Show the R-code you used to find out.*
+
+A: The p-value is `r pine_p`. 
+```{r pine_data}
+{
+library(here)
+veg <- read.csv(here("data", "vegdata.csv"))
+head(veg, 4)
+str(veg)
+sum(is.na(veg))
+dat_tree = droplevels(subset(veg, treatment %in% c("control", "clipped")))
+}
+``` 
+
+```{r wilcox}
+pine_seedlings <- wilcox.test(pine ~ treatment, data = dat_tree, na.rm = TRUE)
+ls(pine_seedlings)
+pine_p <- round(pine_seedlings$p.value, digits = 2)
+pine_p
+```
+
+### Q10
+
+*What were the endpoints of your bootstrap CI? Show the R-code you used to find out.*
+
+A: The end points of our bootstrap CI are `r q10[1]` and `r q10[2]`.   
+```{r tree_boot}
+treatment <- subset(dat_tree, treatment == "clipped")
+control <- subset(dat_tree, treatment == "control")
+tree_boot <- two.boot(treatment$pine, control$pine, FUN = mean, R = 10000)
+str(tree_boot)
+q10 <- round(quantile(tree_boot$t, c(0.0275, 0.975)), digits = 2)
+q10
+```
+
+### Q11
+
+*What is the observed difference in mean tree counts and does it fall within the 95% bootstrap CI?*
+
+A: The observed difference between mean tree counts is 16 and it does fall within the 95% bootstrap CI. 
+
+### Q12
+
+*Briefly describe the Simpson diversity index, and explain what it quantifies.*
+
+A: The Simpson diversity index is a measure of biodiversity from 0-1 that quantifies the number of species present and the number of individuals present in each species as well. The closer to 1, the higher the biodiversity. 
+
+### Q13
+
+*Show the code you used to z-standardize the s.sidi column.*
+
+```{r create_datall}
+{
+dat_bird <- read.csv(here("data", "bird.sub.csv"))
+dat_hab <- read.csv(here("data", "hab.sub.csv"))
+dat_all = merge(dat_bird, dat_hab, by = c("basin", "sub"))
+head(dat_all[, c("b.sidi", "s.sidi")])
+}
+``` 
+```{r}
+{
+s_sidi_mean = mean(dat_all$s.sidi, na.rm = TRUE)
+s_sidi_sd   = sd(dat_all$s.sidi, na.rm = TRUE)
+dat_all$s.sidi.standardized = (dat_all$s.sidi - s_sidi_mean)/s_sidi_sd
+}
+```
+
+### Q14
+
+*Show the code for your completed Monte Carlo simulation loop.*
+
+```{r}
+dat_1 = subset(dat_all, select = c(b.sidi, s.sidi))
+m = 10000 
+result_mc = numeric(m) 
+for(i in 1:m)
+{
+  index_1 = sample(nrow(dat_1), replace = TRUE)
+  index_2 = sample(nrow(dat_1), replace = TRUE)
+  
+  dat_resampled_i = 
+    data.frame(
+      b.sidi = dat_1$b.sidi[index_1],
+      s.sidi = dat_1$s.sidi[index_2])
+    
+  fit_resampled_i = lm(b.sidi ~ s.sidi, data = dat_resampled_i)
+  result_mc[i] = coef(fit_resampled_i)[2]
+} 
+```
+
+### Q15
+
+*In your report, include a plot of your histogram of Monte Carlo resampled slopes. Include vertical lines showing the observed slope and the critical value from the resampled MC slopes.*
+
+```{r}
+fit_1 = lm(b.sidi ~ s.sidi, data = dat_all)
+coef(fit_1)
+slope_observed = coef(fit_1)[2]
+critical_mc = quantile(result_mc, 0.05)
+hist(result_mc, main = "Monte Carlo Resampled Slopes", xlab = "Slope Values")
+abline(v = slope_observed, col = "blue", lwd = 2)
+abline(v = critical_mc, col = "red", lty = 2, lwd = 2)
+``` 
+
+### Q16
+
+*What was your critical value? Was the observed slope less than the critical value?*
+
+A: The critical value is `r critical_mc`. The observed slope of `r slope_observed` is less than the critical value.  
+
+### Q17
+
+*What is your conclusion regarding the evidence of a negative relationship between vegetation cover diversity and bird diversity? Make sure to justify your conclusions using the results of your simulation analysis.*
+
+A: After running our simulation analysis, there is greater evidence for the negative relationship between vegetation cover diversity and bird diversity. Only 5% of slopes in the Monte Carlo dataset were equal to or less than our critical value, and our observed slope is even less than that. From this, we have enough evidence to start testing potential associations within the dataset. 
+
+### Q18
+
+*Show the code you used in your bootstrap loop.*
+
+```{r}
+result_boot = numeric(m) 
+for(i in 1:m)
+{
+  index_boot_1 = sample(nrow(dat_1), replace = TRUE)
+  
+  boot_resampled_i = 
+    data.frame(
+      b.sidi = dat_1$b.sidi[index_boot_1],
+      s.sidi = dat_1$s.sidi[index_boot_1])
+  
+  fit_boot_i = lm(b.sidi ~ s.sidi, data = boot_resampled_i)
+  result_boot[i] = coef(fit_boot_i)[2]
+} 
+hist(result_boot)
+abline(v = slope_observed, lty = 2, col = "red", lwd = 2)
+```
+
+### Q19
+
+*Include your double density plot. For full credit your plot must include: 1) a legend, 2) the two density curves, 3) in different colors, and 4) appropriate axis labels and title*
+
+```{r}
+plot(
+  density(result_mc),
+  main = "Null and Alternative Distribution Densities",
+  xlab = "Slope Coefficient", xlim = c(-0.05, 0.05), ylim = c(0, 65),
+  col = "blue", lwd = 2)
+lines(density(result_boot), col = "red", lwd = 2)
+legend(x = "topright", lty = 1, lwd= 2, col = c("red", "blue"), 
+       legend = c("Alternative", "Null"), bty = "n")
+polygon(density(result_mc), col = adjustcolor("blue", alpha.f = 0.3), border = NA)
+polygon(density(result_boot), col = adjustcolor("red", alpha.f = 0.3), border = NA)
+``` 
+
+### Q20
+
+*Recall that the bootstrap curve shows the distribution of plausible values for the slope coefficient if we could resample the original data. The Monte Carlo curve shows the distribution of plausible values for the slope coefficient if the null hypothesis were true. How can you interpret the region that falls under both curves?*
+
+A: The region that falls under both curves could be interpreted as values that neither reject the null hypothesis nor support the alternative hypothesis. So even though there is overlap with the alternative hypothesis, these values would still fail to reject the null hypothesis. 

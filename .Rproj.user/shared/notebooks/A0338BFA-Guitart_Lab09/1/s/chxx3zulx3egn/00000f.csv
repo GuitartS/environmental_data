@@ -1,0 +1,5 @@
+"0","dat_groups2 = aggregate("
+"0","  body_mass_g ~ species * sex,"
+"0","  data = penguins,"
+"0","  FUN = c)"
+"0","both_bart = bartlett.test(dat_groups2$body_mass_g)"

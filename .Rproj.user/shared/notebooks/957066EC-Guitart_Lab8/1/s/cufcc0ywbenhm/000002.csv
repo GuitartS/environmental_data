@@ -1,0 +1,16 @@
+"0","```r
+fit_1 = lm(b.sidi ~ s.sidi, data = dat_all)
+coef(fit_1)
+```"
+"1","(Intercept)      s.sidi 
+ 0.07116980 -0.02437131 
+"
+"0","```r
+slope_observed = coef(fit_1)[2]
+critical_mc = quantile(result_mc, 0.05)
+hist(result_mc, main = \"Monte Carlo Resampled Slopes\", xlab = \"Slope Values\")
+abline(v = slope_observed, col = \"blue\", lwd = 2)
+```"
+"0","```r
+abline(v = critical_mc, col = \"red\", lty = 2, lwd = 2)
+```"

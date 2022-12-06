@@ -1,0 +1,6 @@
+"0","{"
+"0","plot(dat_dispersal$dist.class, dat_dispersal$disp.rate.ftb,"
+"0","    xlim = c(0, 1500), xlab = ""Distance Class"", ylab = ""Standardized Dispersal Rate"", "
+"0","    main = ""Marbled Salamander First Time Breeders - Ricker Model"")"
+"0","curve(ricker_fun(x, .6/300, 1/500), add = TRUE)"
+"0","}"

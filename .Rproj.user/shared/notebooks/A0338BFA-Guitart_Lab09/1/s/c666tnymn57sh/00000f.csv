@@ -1,0 +1,7 @@
+"0","{"
+"0","  require(palmerpenguins)"
+"0","  penguins = penguins"
+"0","fit_species = lm(formula = body_mass_g ~ species, data = penguins)"
+"0","}"
+"2","Loading required package: palmerpenguins
+"
