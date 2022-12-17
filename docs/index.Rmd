@@ -11,4 +11,4 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Welcome to Sarah Guitart's homepage!
 
-[Final Project: R Reference Guide](final_R_reference.html) 
+[Final Project: R Reference Guide](Guitart_RReference.html) 
