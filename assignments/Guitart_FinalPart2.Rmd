@@ -1,0 +1,232 @@
+---
+title: "Analysis of Environmental Data - Final Project Part 2"
+author: "Sarah Guitart"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+    theme: darkly 
+---
+
+### Load data + examine
+
+```{r}
+library(here)
+delomys = read.csv(here("data", "delomys.csv"))
+head(delomys)
+dim(delomys)
+str(delomys)
+```
+
+### Numerical exploration
+
+```{r}
+summary(delomys$body_mass)
+summary(delomys$body_length)
+shapiro.test(delomys$body_mass)
+shapiro.test(delomys$body_length)
+```
+
+### Graphical exploration
+
+#### Scatterplot
+```{r fig.width=6}
+plot(delomys$body_mass, delomys$body_length, main = "Body Mass vs Body Length",
+     xlab = "Body Mass (g)", ylab = "Body Length (mm)")
+```
+#### Histograms
+
+```{r fig.width=5, fig.height=3}
+hist(delomys$body_mass, xlab = "Body Mass (g)", main = "Body Mass Histogram")
+```
+
+```{r fig.width=5, fig.height=3}
+hist(delomys$body_length, xlab = "Body Length (mm)", main = "Body Length Histogram")
+```
+
+#### Boxplots
+
+```{r fig.asp=0.55}
+boxplot(body_mass ~ binomial, data = delomys, main = "Body Mass Boxplot",
+        xlab = "Species", ylab = "Body Mass (g)")
+```
+
+```{r fig.width=5, fig.height=3}
+boxplot(body_mass ~ sex, data = delomys, main = "Body Mass by Sex",
+        xlab = "Sex", ylab = "Body Mass (g)")
+```
+
+```{r fig.width=6}
+boxplot(body_mass ~ binomial * sex, data = delomys, 
+        main = "Body Mass by Species and Sex",
+        xlab = "", names = c("Delomys \n dorsalis \n female", 
+                             "Delomys \n sublineatus \n female",
+                             "Delomys \n dorsalis \n male",
+                             "Delomys \n sublineatus \n male"),
+        ylab = "Body Mass (g)", las = 2)
+```
+
+### Q1
+
+*Qualitatively describe the relationship between body mass and length. Does the relationship seem linear, curved, nonexistent?*
+
+A: Looking at the scatterplot of body mass and length, the relationship between body mass and length looks linear and monotonic. 
+
+### Q2
+
+*Qualitatively describe the shapes of the histograms. Do the data appear normally-distributed? Explain why or why not. Explain why we care (or not) whether the data are normally distributed.*
+
+A: The data do not appear normally-distributed in the histograms because the frequency of values appears to be skewed towards the left, especially in the body length histogram. We do care if our data are not normally distributed because many analysis processes require normally distributed data. We definitely would want to see if our residuals are normally distributed before we run linear regression models. 
+
+### Q3
+
+*Using both the histograms and normality tests, do you think the (unconditioned) body masses and body length are normally-distributed? Make sure you contrast your visual assessment of normality to the results of the numerical normality tests.*
+
+A: Using both the histogram and normality tests, I do not think the body masses and body lengths are normally-distributed. This is because the histograms look like their skewed to the left and both of the p-values of the Shapiro tests were under 0.05. This means that we can reject the null hypothesis that our data are normally distributed. 
+
+### Q4
+
+*Examine the three conditional boxplots. Describe any graphical evidence you see for body mass differences based on species and/or sex.*
+
+A: After examining the three conditional boxplots, I think there is a good amount of graphical evidence for body mass differences based on species and sex. 
+
+### Model building
+
+```{r}
+fit1 = lm(body_length ~ body_mass, data = delomys)
+fit2 = lm(body_mass ~ sex, data = delomys)
+fit3 = lm(body_mass ~ binomial, data = delomys)
+fit4 = lm(body_mass ~ sex + binomial, data = delomys)
+fit5 = lm(body_mass ~ sex * binomial, data = delomys)
+```
+
+```{r}
+anova(fit2)
+anova(fit3)
+anova(fit4)
+anova(fit5)
+```
+
+### Model logistics
+```{r}
+hist1 = hist(residuals(fit1))
+hist2 = hist(residuals(fit2))
+hist3 = hist(residuals(fit3))
+hist4 = hist(residuals(fit4))
+hist5 = hist(residuals(fit5))
+```
+```{r}
+shapiro.test(residuals(fit1))
+shapiro.test(residuals(fit2))
+shapiro.test(residuals(fit3))
+shapiro.test(residuals(fit4))
+shapiro.test(residuals(fit5))
+```
+
+
+```{r}
+
+```
+
+### Q5
+
+*What do you conclude about residual normality based on the numerical and graphical diagnostics?*
+
+A:
+
+### Q6
+
+*Are violations of the normality assumption equally severe for all the models?*
+
+A:
+
+### Model interpretation
+
+```{r}
+knitr::kable(coef(summary(fit1)))
+knitr::kable(anova(fit2))
+knitr::kable(anova(fit3))
+knitr::kable(anova(fit4))
+knitr::kable(anova(fit5))
+```
+
+### Q7
+
+*What is the magnitude of the mass/length relationship?*
+
+A:
+
+### Q8
+
+*What is the expected body length of an animal that weighs 100g?*
+
+A:
+
+### Q9
+
+*What is the expected body length of an animal that weighs 0g?*
+
+A:
+
+### Q10
+
+*What is the base level for sex?*
+
+A:
+
+### Q11
+
+*What is the base level for binomial?*
+
+A:
+
+### Q12
+
+*Which sex is heavier? How do you know?*
+
+A:
+
+### Q13
+
+*Which species is heavier? How do you know?*
+
+A:
+
+### Q14
+
+*Are sex and species significant predictors for body mass?*
+
+A:
+
+### Q15
+
+*Is there a significant interaction?*
+
+A:
+
+### Q16
+
+*Examine the p-values for the main effects (sex and species) in all four of the ANOVA tables. Does the significance level of either main effect change very much among the different models?*
+
+A:
+
+### Model comparison: body mass
+
+```{r}
+AIC(fit2)
+AIC(fit3)
+AIC(fit4)
+AIC(fit5)
+```
+
+### Q17
+
+*Which two models have the lowest AIC?*
+
+A: 
+
+### Q18
+
+*Which of the two models with lowest AIC scores would you select? Explain your decision based on model fit and the complexity/understanding tradeoff.*
+
+A:

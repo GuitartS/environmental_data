@@ -14,31 +14,380 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Loading Data and Packages
 
+#### Library and Require
+
+The functions library() and require() load packages to RStudio that are *already installed*. The functions are *case-sensitive*. The functions can be used almost interchangeably, but the main difference is that library() will give you an error message if the package doesn't exist, while require() will only give you a warning. Library() *will not* let you proceed until you fix the error.
+
+```{r}
+## loading the palmerpenguin packages incorrectly at first with require, then correctly with library
+require(Palmerpenguins)
+library(palmerpenguins)
+```
+```{r}
+## loading the package here with require
+require(here)
+```
+
+#### Loading Files
+
+Now that I've loaded my packages, it's time to load a csv file. Csv files can be loaded into RStudio with the function read.csv(). This is also case-sensitive and needs to have "" surrounding the filename. Note that to load a file, *you would normally have to spell out to R exactly where to locate your individual file within your computer system*. Luckily, with here(), you can specify what folder R should start with, as seen in the R code above. That shows us that if we use here() to load a file, R can start looking in the environmental_data folder, rather than the entire directory. Then, you can tell R which subfolder within that main folder holds your file. It's important to note that *here() is a function that you use within the read.csv() function*. I can then use the function head() to make sure my datafile was loaded correctly.  
+```{r}
+## loading the 2021 gingko datafile using here()
+ginkgo <- read.csv(here("data", "ginkgo_data_2022.csv"))
+head(ginkgo)
+```
 
 ## Data Structures
 
-```{r}
+#### Basic Functions in R
 
+#### c()
+
+The function c() combines or concatenates its arguments into a vector (a 1-dimensional data structure consisting of 1 or more elements). All of the elements *must be of the same type*. You cannot combine characters and numeric types into the same vector with c(), but you can use a singular type of your choice. To store my vector, I need to assign them to an object. I can then call my object directly, or use the function print(), and my vector will appear.
+
+```{r}
+## create a vector of numbers 
+num_vec = c(1, 2, 3, 4, 5, 6)
+num_vec
+```
+
+```{r}
+## create a vector of characters
+char_vec = c("R", "can", "be", "pretty", "fun", "sometimes")
+char_vec
+print(char_vec)
+```
+
+#### length()
+
+The function length() tells you the length of data objects, lists, and vectors, or how many things are in your object. It works with characters too, but only in the sense that it tells you the individual character chunks of your vector. 
+
+```{r}
+## what is the length of num_vec?
+length(num_vec)
+```
+```{r}
+## what does it do with characters?
+char2 = c("R can be", "pretty fun", "sometimes")
+length(char2)
+length(char_vec)
+```
+
+#### matrix()
+
+A matrix in R is a two dimensional arrangement of numbers in a specified number of rows and columns. You can create this by using the function matrix(). There are specific arguments within matrix(). You first need to tell it what data is going into the matrix, how many rows it will have, how many columns it will have, if it will sort the data by rows or by columns, and if the rows and columns will have names. Matrices in R can have *only one data type*. 
+
+Below I used num_vec to create a matrix with 2 columns and 3 rows, sorted by rows, and no names.
+```{r}
+m1 = matrix(num_vec, nrow = 3, ncol = 2, byrow = TRUE, dimname = NULL)
+m1
+```
+
+Here, I swapped the number of rows and columns.
+```{r}
+m2 = matrix(num_vec, nrow = 2, ncol = 3, byrow = TRUE, dimname = NULL)
+m2
+```
+
+Here, I sorted by columns. 
+```{r}
+m3 = matrix(num_vec, nrow = 2, ncol = 3, byrow = FALSE, dimname = NULL)
+m3
+```
+
+Let's say you make a matrix that is not a multiple of your vector length. It would cut off your vector. 
+```{r}
+m4 = matrix(num_vec, nrow = 2, ncol = 4, byrow = FALSE, dimname = NULL)
+m4
+```
+
+Lastly, matrices can be made with characters, if you feel the need.
+```{r}
+## why not!
+m5 = matrix(char_vec, nrow = 2, ncol = 6, byrow = TRUE, dimname = NULL)
+m5
+```
+
+#### data.frame()
+
+You can build a dataframe in R using the function data.frame().The cool thing about this function is that it's pretty easy to build, but you can also *mix types*. This means you can have both numbers and characters in your dataframe. If I want to build a dataframe out of my current vectors, I can tell data.frame() what the names of my variables are.
+```{r}
+d = data.frame("numbers" = num_vec, "characters" = char_vec)
+d
+```
+
+Additionally, I can build a dataframe from scratch. 
+```{r}
+d2 = data.frame("numbers" = c(1:6), "characters" = c("one", "two", "three", "four", "five", "six")) 
+d2
+```
+
+#### nrow()
+
+You can find out the number of rows your dataframe has by using the function nrow(). This is useful if you're trying to figure out the number of observations your dataframe has. 
+```{r}
+## how many rows does my dataframe have?
+nrow(ginkgo)
+```
+
+#### ncol()
+
+You can find out the number of columns your dataframe has by using the function ncol(). This is useful if you're trying to figure out how many variables your dataframe has. 
+
+```{r}
+## how many columns does my dataframe have?
+ncol(ginkgo)
+```
+
+#### dim()
+
+You can find out the dimensions of your object by using dim(). It will give you the number of rows and columns in your dataframe, *in that order*. As seen below, my dataframe has 220 rows and 6 columns. 
+```{r}
+## what are the dimensions of my dataframe?
+dim(ginkgo)
 ```
 
 ## Subsetting
 
+#### Subsetting by Name
 
-```{r pressure}
-
+To retrieve a column of your dataframe, you can subset it by using the format "objectname$variablename". You can either simply call the column, or you can store it into a new object if you wish to manipulate it further. Note you can *only use this with columns, not rows*. 
+```{r}
+## calling the column
+ginkgo$max_width
+```
+```{r}
+## importing that column into a new object
+max_width = ginkgo$max_width
+head(max_width)
 ```
 
+#### Subsetting by Position
+
+This is a pretty fun and more adaptable way to call something from your dataframe. Instead of using the variable *name*, you're using "[]" to call its *physical position within the dataframe*. You can call whole rows, columns, or just singular elements. The order to call elements is [row, column]. You will have to know where your desired values live, but it's pretty neat.
+```{r}
+## I want the first row, so I specify the row number I'm interested in, and then LEAVE THE COLUMN ENTRY BLANK. It will assume you're looking for the first column and return that instead.
+## incorrect first
+## correct second
+ginkgo[1]
+ginkgo[1,]
+```
+```{r}
+## calling one element only
+ginkgo[2,3]
+```
+```{r}
+## selecting the third column only, leaving the row entry empty
+ginkgo[,3]
+```
+
+#### Subsetting by subset()
+
+You can also subset data from your dataframe by using the function subset(). In this example, I will use the penguins dataframe to select rows only for Adelie penguins by telling R what I'm specifically interested in the species column. Like in previous examples, I can either just call the values, or I can store them in a separate data object. 
+```{r}
+subset(penguins, species == "Adelie")
+adelie = subset(penguins, species == "Adelie")
+adelie
+```
 
 ## Numerical Data Exploration
 
-```{r}
+#### summary()
 
+The function summary() can give you quick summaries of the values in multiple data objects. Depending on the data type within your object, it will either give you a quick summary of the data, providing the minimum and maximum values, the 1st and 3rd quartiles, and the mean and median, or it will tell you the length of your vector, as well as it's class and mode. 
+```{r}
+## let's try something small
+summary(num_vec)
+summary(char_vec)
+```
+```{r}
+## let's try something a little bigger
+## let's get a summary of the maximum width of our ginkgo leaves
+summary(ginkgo$max_width)
+```
+
+You can also summarize the whole dataframe, which will give you summaries by column.
+```{r}
+## the whole enchilada  
+summary(ginkgo)
+```
+
+#### mean()
+
+The summary function provides us with the mean, but the function mean() can give us just the mean value, no muss, no fuss.
+```{r}
+## something small!
+mean(num_vec)
+```
+
+However, let's say we create a new dataset that has a NA value. 
+```{r}
+bad = c(1, 2, 3, 4, 5, 6, NA)
+bad
+mean(bad)
+```
+
+You can solve that by using the na.rm arugment within the mean() function.
+```{r}
+## let's remove the NAs
+mean(bad, na.rm = TRUE)
+```
+
+Unfortunately, we can't run mean() on our whole ginkgo dataframe, because it has non-numeric data types. That's okay, because we can easily get the means of our individual columns. 
+```{r}
+## trying the whole dataframe
+mean(ginkgo, na.rm = TRUE)
+```
+```{r}
+## individual columns
+mean(ginkgo$max_width, na.rm = TRUE)
+mean(ginkgo[,3], na.rm= TRUE)
+```
+
+#### sd()
+
+The function to retrieve the standard deviation, sd(), works exactly like the mean() function. You can also remove NA values within the function itself. Don't forget that you can always store these outputs as their own object!
+```{r}
+sd(bad)
+sd(bad, na.rm = TRUE)
+```
+
+```{r}
+sd(ginkgo$max_width, na.rm = TRUE)
+sd = sd(ginkgo[,3], na.rm= TRUE)
+sd
 ```
 
 ## Graphical Data Exploration
 
-```{r}
+#### Scatterplots
 
+To build a scatterplot in R, using the function plot(). Graphical functions in R have a lot of additional arguments, which can be intimidating. However, a lot of them are uniform throughout the different types of graphs, and they can be used to either make your graphs easier to read, or simply look nicer. We'll start with a basic scatterplot.
+```{r}
+## basic scatterplot, with max leaf depth on the x axis, and max leaf width on the y axis. 
+## x axis goes first, then y
+plot(ginkgo$max_depth, ginkgo$max_width)
+```
+
+Now that you know what your basic plot looks like, it's time to make it look nicer and easier to interpret. The arguments **main**, **xlab**, and **ylab** can edit your main title, title of your x axis, and title of your y axis. The arguments **xlim** and **ylim** specify the range of your x and y axes. The arguments **col**, **pch**, and **cex** dictate your point color, shape, and magnification. 
+```{r}
+plot(ginkgo$max_depth, ginkgo$max_width, main = "Sarah's Ginkgo Plot", 
+     xlab = "Ginkgo Leaf Depth", ylab = "Ginkgo Leaf Width", xlim = c(20, 130), 
+     ylim = c(20, 150), col = "purple", pch = 18, cex = 1)
+```
+
+#### Histograms
+
+Histograms are really useful to see how your data is distributed. You can use the function hist() to create them.
+```{r}
+hist(penguins$flipper_length_mm, main = "Sarah's Histogram", xlab = "Penguin Flipper Lengths (mm)")
+```
+
+Let's say you don't like how R chose to bin your data frequencies. You try to force R to change using the breaks argument. Let's say I want 5 frequency bins.
+```{r}
+## let's try just telling R to do 5 bins
+hist(penguins$flipper_length_mm, breaks = 5, main = "Sarah's Histogram", xlab = "Penguin Flipper Lengths (mm)")
+```
+
+R didn't listen to us and instead made 7 bins because it uses it as more of a suggestion. Instead, let's tell R where we want our breakpoints to be. 
+```{r}
+## breakpoints at 20 mm intervals
+hist(penguins$flipper_length_mm, breaks = c(170,190,210,230,250), main = "Sarah's Histogram", xlab = "Penguin Flipper Lengths (mm)")
+```
+
+It doesn't look great, but we did it! We can also increase the number of bins within our histogram.
+```{r}
+## more breakpoints!
+hist(penguins$flipper_length_mm, breaks = 30, main = "Sarah's Histogram", xlab = "Penguin Flipper Lengths (mm)")
+```
+
+#### Boxplots
+
+Boxplots are made using the function boxplot(). They show us the distribution of the data, outliers, minimum and maximum, median, and the 1st and 3rd quartile. Let's make a simple boxplot of petiole lengths from the ginkgo dataframe. The same arguments can be made to give it titles and labels.
+```{r}
+boxplot(ginkgo$petiole_length, main = "Sarah's Boxplot", xlab = "Petiole Length", 
+        ylab = "Length (mm)")
+```
+
+Looks pretty good! Now let's make another boxplot using a variable conditioned on the seeds.present column. This means that we will have two boxes within our plot, one showing our data where seeds are present, and the second showing our data where seeds are not present. Making a conditional boxplot is pretty easy, especially if you use the formula notation. The formula notation is as follows function(conditioned variable ~ conditional variable, data = dataframe). Since you have data = dataframe, you don't even need to subset the column names with the data object name, you can simply use the name of the variables. See our boxplot below.
+```{r}
+boxplot(max_width ~ seeds_present, data = ginkgo, main = "Sarah's Conditional Boxplot", 
+        xlab = "Leaf Width and Seed Presence", ylab = "Width (mm)")
+```
+
+#### Using the par() Function
+
+The par() function is great at putting graphs together in a panel and making them look nice. Let's say we want a panel of histograms showing the distribution of our penguin morphometric data. Using the par() function and the argument mfrow, we can tell it to create a 2 by 2 panel of histograms. By calling the function above the graphs, it will tell R to arrange the graphs according to our argument. If we want R to stop arranging graphs this way, we can use the function dev.off() after our last graph. 
+```{r}
+par(mfrow = c(2,2))
+hist(penguins$bill_length_mm, main = "Penguin Bill Lengths", xlab = "Bill Length (mm)")
+hist(penguins$bill_depth_mm, main = "Penguin Bill Depths", xlab = "Bill Depth (mm)")
+hist(penguins$flipper_length_mm, main = "Penguin Flipper Lengths", 
+     xlab = "Flipper Length (mm)")
+hist(penguins$body_mass_g, main = "Penguin Body Masses", xlab = "Body Mass (g)")
+dev.off()
 ```
 
 ## Distribution Functions 
+
+#### Normal Distribution Functions
+
+The following three functions give us various outputs of density functions of normal distributions. All the functions have arguments for mean and sd, and they will assume that mean = 0 and sd = 1 if you do not provide values otherwise. 
+
+#### dnorm()
+
+The function dnorm() gives us the value of the probability density function at value x. This means that when we give R the value x, it returns to us the probability of that value along our normally distributed curve. 
+```{r}
+## let's try x = 1, showing the arguments and the default values
+dnorm(x = 1, mean = 0, sd =1)
+dnorm(x = 1)
+dnorm(1)
+```
+
+#### pnorm()
+
+The function pnorm() gives us the value of the cumulative density function at value q. This is the area under the curve to the left of the assigned value. Since this is normally distributed and the mean is 0, at q = 0, the area to the left of the assigned value is 50% of the total curve. 
+```{r}
+# let's try x = 1, showing the arguments and the default values
+pnorm(q = 1, mean = 0, sd = 1)
+pnorm(q = 1)
+pnorm(1)
+pnorm(0)
+```
+
+#### qnorm()
+
+The function qnorm() gives us the value of the inverse cumulative density function at value p. Instead of telling us the area under the curve, we are trying to find the value along the x-axis that gives us the area percentage p. When we are looking for p = 0.5, we are trying to find out what value gives us 50% of the curve. 
+```{r}
+qnorm(p = 0.5, mean = 0, sd = 1)
+qnorm(p = 0.5)
+qnorm(0.5)
+```
+
+#### Binomial Distribution Functions
+
+The following three functions gives us various output for density functions of binomial distributions. All of the functions have arguments for size and probability. Size is the number of trails and can be zero or more, while probability is the probability of success of each trail. Unlike the normal distribution functions, there are no default values. 
+
+#### dbinom()
+
+The function dbinom() gives us the value of the probability density function of the binomial distribution at variable x in a certain number of trails with a specific probability of success for each trial. 
+```{r}
+## let's find the probability of x = 1, when we have 1 trial, and a probability success of 0.5
+dbinom(x = 1, size = 1, prob = 0.5)
+dbinom(1, 1, 0.5)
+```
+
+#### pbinom()
+
+The function pbinom() gives us the value of the cumulative density function of the binomial distribution at variable q in a certain number of trails with a specific probability of success for each trial. Like pnorm(), this gives us the area to the left of the given value. 
+```{r}
+## let's try the cumulative density of variable 5, with 10 trials and a probability success of 0.5
+pbinom(q = 1, size = 2, prob = 0.5)
+```
+
+#### qbinom()
+
+The function qbinom() gives us the value of the inverse cumulative density function of the binomial distribution at variable p in a certain number of trails with a specific probability of success for each trial. Like qnorm(), this gives us the value along the x-axis when we have area percentage p. 
+```{r}
+qbinom(p = 0.75, size = 2, prob = 0.5)
+```
